@@ -1,3 +1,6 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronDown, faUpload } from "@fortawesome/free-solid-svg-icons";
+
 export default function ActionBar() {
   return (
     <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6 space-y-4 md:space-y-0">
@@ -14,10 +17,12 @@ export default function ActionBar() {
           <option value="img">Imagens</option>
           <option value="zip">Arquivos ZIP</option>
          </select>
-         <i className="fas fa-chevron-down absolute right-3 top-3 text-gray-400 pointer-events-none"></i>
+         <span className="absolute right-3 top-3 text-gray-400 pointer-events-none">
+           <FontAwesomeIcon icon={faChevronDown} />
+         </span>
         </div>
         <button id="upload-button" className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg flex items-center justify-center">
-          <i className="fas fa-upload mr-2"></i>
+          <FontAwesomeIcon icon={faUpload} className="mr-2" />
           <span>Upload</span>
         </button>
       </div>   
