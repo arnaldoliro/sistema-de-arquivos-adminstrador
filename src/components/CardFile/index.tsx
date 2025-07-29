@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faFilePdf,
@@ -28,9 +28,26 @@ export default function CardFile({
   pinned
 }: import("../../interfaces/CardFiles").default & { pinned?: boolean }) {
   const [openDropdown, setOpenDropdown] = useState(false);
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!openDropdown) return;
+    function handleClickOutside(event: MouseEvent) {
+      if (cardRef.current && !cardRef.current.contains(event.target as Node)) {
+        setOpenDropdown(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [openDropdown]);
 
   return (
-    <div className={`file-card bg-white rounded-lg shadow p-4 border-l-4 ${pinned ? "border-blue-500" : "border-transparent"}`}>
+    <div
+      ref={cardRef}
+      className={`file-card bg-white rounded-lg shadow p-4 border-l-4 ${pinned ? "border-blue-500" : "border-transparent"} hover:scale-105 transition-transform duration-300`}
+    >
       <div className="flex justify-between items-start mb-3">
         <div className={`file-icon ${type}-icon`}>
           {type === "pdf" && <FontAwesomeIcon color="red" size="2xl" icon={faFilePdf} />}
@@ -40,7 +57,7 @@ export default function CardFile({
         </div>
         <div className="dropdown relative">
           <button
-            className="text-gray-500 hover:text-gray-700 focus:outline-none"
+            className="text-gray-500 hover:text-gray-700 focus:outline-none cursor-pointer rounded-full hover:bg-gray-200 transition duration-300"
             onClick={() => setOpenDropdown(!openDropdown)}
             aria-label="Abrir menu de opções"
           >

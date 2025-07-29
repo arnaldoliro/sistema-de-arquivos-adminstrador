@@ -1,27 +1,9 @@
 import CardFile from "@/components/CardFile";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faThumbtack } from "@fortawesome/free-solid-svg-icons";
+import { filesData } from "@/data/FilesData";
 
-const pinnedFiles = [
-  {
-    id: "1",
-    name: "Relatório Anual 2023.pdf",
-    description: "Relatório financeiro completo do ano fiscal de 2023",
-    size: "2.4 MB",
-    updated: "15/04/2023",
-    icon: "fa-file-pdf",
-    type: "pdf"
-  },
-  {
-    id: "2",
-    name: "Manual do Usuário.docx",
-    description: "Instruções detalhadas para novos usuários do sistema",
-    size: "1.8 MB",
-    updated: "03/05/2023",
-    icon: "fa-file-word",
-    type: "doc"
-  }
-];
+const pinnedFiles = filesData.filter(file => file.pinned);
 
 export default function PinnedSection() {
 
