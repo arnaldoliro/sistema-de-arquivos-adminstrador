@@ -1,5 +1,6 @@
-
 import CardFile from "@/components/CardFile";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faThumbtack } from "@fortawesome/free-solid-svg-icons";
 
 const pinnedFiles = [
   {
@@ -45,7 +46,7 @@ export default function PinnedSection() {
   return (
     <div className="mb-8 pinned-section rounded-lg p-4">
       <h4 className="text-md font-medium text-gray-700 mb-4">
-        <i className="fas fa-thumbtack mr-2 text-blue-600"></i>
+        <FontAwesomeIcon icon={faThumbtack} className="mr-2 text-blue-600" />
         Arquivos Fixados
       </h4>
       <div

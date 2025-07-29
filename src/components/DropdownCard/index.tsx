@@ -1,4 +1,11 @@
 import React from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faEdit,
+  faDownload,
+  faThumbtack,
+  faTrashAlt
+} from "@fortawesome/free-solid-svg-icons";
 
 export interface DropdownCardProps {
   onEdit?: () => void;
@@ -24,7 +31,7 @@ export default function DropdownCard({
           className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
           onClick={onEdit}
         >
-          <i className="fas fa-edit mr-2"></i> Editar
+          <FontAwesomeIcon icon={faEdit} className="mr-2" /> Editar
         </button>
       )}
       {onDownload && (
@@ -32,7 +39,7 @@ export default function DropdownCard({
           className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
           onClick={onDownload}
         >
-          <i className="fas fa-download mr-2"></i> Baixar
+          <FontAwesomeIcon icon={faDownload} className="mr-2" /> Baixar
         </button>
       )}
       {onPin && (
@@ -40,7 +47,7 @@ export default function DropdownCard({
           className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
           onClick={onPin}
         >
-          <i className="fas fa-thumbtack mr-2"></i> {pinLabel}
+          <FontAwesomeIcon icon={faThumbtack} className="mr-2" /> {pinLabel}
         </button>
       )}
       {onUnpin && (
@@ -48,7 +55,7 @@ export default function DropdownCard({
           className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
           onClick={onUnpin}
         >
-          <i className="fas fa-thumbtack mr-2"></i> Desafixar
+          <FontAwesomeIcon icon={faThumbtack} className="mr-2" /> Desafixar
         </button>
       )}
       {onDelete && (
@@ -56,7 +63,7 @@ export default function DropdownCard({
           className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
           onClick={onDelete}
         >
-          <i className="fas fa-trash-alt mr-2"></i> Excluir
+          <FontAwesomeIcon icon={faTrashAlt} className="mr-2" /> Excluir
         </button>
       )}
     </div>

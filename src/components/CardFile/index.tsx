@@ -1,4 +1,12 @@
-import { useState } from "react";
+import React, { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faFilePdf,
+  faFileImage,
+  faFileWord,
+  faFileArchive,
+  faEllipsisV
+} from "@fortawesome/free-solid-svg-icons";
 
 
 import DropdownCard from "../DropdownCard";
@@ -25,7 +33,10 @@ export default function CardFile({
     <div className={`file-card bg-white rounded-lg shadow p-4 border-l-4 ${pinned ? "border-blue-500" : "border-transparent"}`}>
       <div className="flex justify-between items-start mb-3">
         <div className={`file-icon ${type}-icon`}>
-          <i className={`fas ${icon}`}></i>
+          {type === "pdf" && <FontAwesomeIcon color="red" size="2xl" icon={faFilePdf} />}
+          {type === "img" && <FontAwesomeIcon color="green" size="2xl" icon={faFileImage} />}
+          {type === "doc" && <FontAwesomeIcon color="blue" size="2xl" icon={faFileWord} />}
+          {type === "zip" && <FontAwesomeIcon color="orange" size="2xl" icon={faFileArchive} />}
         </div>
         <div className="dropdown relative">
           <button
@@ -33,7 +44,7 @@ export default function CardFile({
             onClick={() => setOpenDropdown(!openDropdown)}
             aria-label="Abrir menu de opções"
           >
-            <i className="fas fa-ellipsis-v"></i>
+            <FontAwesomeIcon icon={faEllipsisV} />
           </button>
           {openDropdown && (
             <DropdownCard
