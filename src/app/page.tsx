@@ -1,5 +1,6 @@
 'use client';
 import ActionBar from "@/components/ActionBar";
+import AllFilesSection from "@/components/AllFilesSection";
 import Navbar from "@/components/Navbar";
 import PinnedSection from "@/components/PinnedSection";
 import Sidebar from "@/components/Sidebar";
@@ -14,6 +15,7 @@ export default function Home() {
           <div className="max-w-7xl mx-auto">
             <ActionBar />
             <PinnedSection />
+            <AllFilesSection />
           </div>
         </main>
       </div>

@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import CardFile from "@/components/CardFile";
 
 const pinnedFiles = [
   {
@@ -23,7 +23,6 @@ const pinnedFiles = [
 ];
 
 export default function PinnedSection() {
-  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
 
   // Funções para requisições futuras
   const handleEdit = (id: string) => {
@@ -54,55 +53,21 @@ export default function PinnedSection() {
         className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"
       >
         {pinnedFiles.map(file => (
-          <div key={file.id} className="file-card bg-white rounded-lg shadow p-4 border-l-4 border-blue-500">
-            <div className="flex justify-between items-start mb-3">
-              <div className={`file-icon ${file.type}-icon`}>
-                <i className={`fas ${file.icon}`}></i>
-              </div>
-              <div className="dropdown relative">
-                <button
-                  className="text-gray-500 hover:text-gray-700 focus:outline-none"
-                  onClick={() => setOpenDropdown(openDropdown === file.id ? null : file.id)}
-                >
-                  <i className="fas fa-ellipsis-v"></i>
-                </button>
-                {openDropdown === file.id && (
-                  <div className="dropdown-menu absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10 border border-gray-200">
-                    <button
-                      className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                      onClick={() => handleEdit(file.id)}
-                    >
-                      <i className="fas fa-edit mr-2"></i> Editar
-                    </button>
-                    <button
-                      className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                      onClick={() => handleDownload(file.id)}
-                    >
-                      <i className="fas fa-download mr-2"></i> Baixar
-                    </button>
-                    <button
-                      className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                      onClick={() => handleUnpin(file.id)}
-                    >
-                      <i className="fas fa-thumbtack mr-2"></i> Desafixar
-                    </button>
-                    <button
-                      className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
-                      onClick={() => handleDelete(file.id)}
-                    >
-                      <i className="fas fa-trash-alt mr-2"></i> Excluir
-                    </button>
-                  </div>
-                )}
-              </div>
-            </div>
-            <h5 className="font-medium text-gray-800 mb-1">{file.name}</h5>
-            <p className="text-sm text-gray-500 mb-3">{file.description}</p>
-            <div className="flex justify-between items-center text-xs text-gray-500">
-              <span>{file.size}</span>
-              <span>Atualizado: {file.updated}</span>
-            </div>
-          </div>
+          <CardFile
+            key={file.id}
+            id={file.id}
+            name={file.name}
+            description={file.description}
+            size={file.size}
+            updated={file.updated}
+            icon={file.icon}
+            type={file.type}
+            onEdit={handleEdit}
+            onDownload={handleDownload}
+            onUnpin={handleUnpin}
+            onDelete={handleDelete}
+            pinLabel="Desafixar"
+          />
         ))}
       </div>
     </div>
