@@ -1,4 +1,18 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## Como rodar
+
+```bash
+npm run dev
+```
+
+Acesse http://localhost:3000 para visualizar o sistema.
+
+## Estrutura
+- Interface moderna com Tailwind CSS
+- Componentes React para modais, cards de arquivos, notificações
+- Gerenciamento de arquivos em memória
+
+## Personalização
+Adapte os componentes conforme necessário para integrar backend ou persistência real.
 
 ## Getting Started
 

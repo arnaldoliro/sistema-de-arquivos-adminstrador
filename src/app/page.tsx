@@ -1,103 +1,120 @@
-import Image from "next/image";
+"use client";
+import { useState } from "react";
+
+type FileType = "pdf" | "doc" | "img" | "zip";
+interface FileData {
+  name: string;
+  description: string;
+  type: FileType;
+  date: string;
+  pinned: boolean;
+}
+
+type FilesState = Record<string, FileData>;
 
 export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  // Estado para arquivos em memória
+  const [files, setFiles] = useState<FilesState>({});
+  const [currentFileId, setCurrentFileId] = useState<string | null>(null);
+  const [showUploadModal, setShowUploadModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [toast, setToast] = useState<{ message: string; type: string; visible: boolean }>({ message: "", type: "success", visible: false });
+  const [search, setSearch] = useState("");
+  const [filter, setFilter] = useState("all");
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  // Função para adicionar arquivo
+  function handleUpload(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const form = e.currentTarget;
+    const name = (form.fileName as HTMLInputElement).value;
+    const description = (form.fileDescription as HTMLInputElement).value;
+    const type = (form.fileType as HTMLSelectElement).value as FileType;
+    if (!name) return;
+    const id = Date.now().toString();
+    setFiles(prev => ({
+      ...prev,
+      [id]: { name, description, type, date: new Date().toLocaleDateString('pt-BR'), pinned: false }
+    }));
+    setShowUploadModal(false);
+    setToast({ message: "Arquivo adicionado com sucesso!", type: "success", visible: true });
+    setTimeout(() => setToast(t => ({ ...t, visible: false })), 3000);
+  }
+
+  // Renderização dos cards de arquivos
+  const filteredFiles = Object.entries(files).filter(([id, file]) => {
+    const matchesSearch = file.name.toLowerCase().includes(search.toLowerCase()) || file.description.toLowerCase().includes(search.toLowerCase());
+    const matchesType = filter === "all" || file.type === filter;
+    return matchesSearch && matchesType;
+  });
+
+  return (
+    <div className="min-h-screen bg-gray-50 p-4">
+      {/* Toast Notification */}
+      {toast.visible && (
+        <div className={`toast bg-gray-800 text-white px-4 py-3 rounded-lg shadow-lg fixed top-4 right-4 z-50`}>
+          {toast.message}
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      )}
+
+      {/* Modais */}
+      {showUploadModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <form className="bg-white rounded-lg p-6 shadow-lg w-full max-w-md flex flex-col gap-4" onSubmit={handleUpload}>
+            <h2 className="text-lg font-bold mb-2">Upload de Arquivo</h2>
+            <input name="fileName" type="text" placeholder="Nome do arquivo" className="border px-2 py-1 rounded" required />
+            <input name="fileDescription" type="text" placeholder="Descrição" className="border px-2 py-1 rounded" />
+            <select name="fileType" className="border px-2 py-1 rounded">
+              <option value="pdf">PDF</option>
+              <option value="doc">Documento</option>
+              <option value="img">Imagem</option>
+              <option value="zip">Arquivo Compactado</option>
+            </select>
+            <div className="flex gap-2 justify-end mt-2">
+              <button type="button" className="px-4 py-2 rounded bg-gray-200" onClick={() => setShowUploadModal(false)}>Cancelar</button>
+              <button type="submit" className="px-4 py-2 rounded bg-blue-600 text-white">Salvar</button>
+            </div>
+          </form>
+        </div>
+      )}
+      {/* Edit Modal */}
+      {/* ...modal de edição... */}
+      {/* Delete Modal */}
+      {/* ...modal de exclusão... */}
+
+      <header className="mb-6 flex justify-between items-center">
+        <h1 className="text-2xl font-bold">Sistema de Arquivo ADM</h1>
+        <button className="bg-blue-600 text-white px-4 py-2 rounded-lg" onClick={() => setShowUploadModal(true)}>
+          Upload de Arquivo
+        </button>
+      </header>
+
+      {/* Barra de busca e filtro */}
+      <div className="mb-4 flex gap-2">
+        <input type="text" placeholder="Buscar arquivo..." className="border px-2 py-1 rounded w-full" value={search} onChange={e => setSearch(e.target.value)} />
+        <select className="border px-2 py-1 rounded" value={filter} onChange={e => setFilter(e.target.value)}>
+          <option value="all">Todos</option>
+          <option value="pdf">PDF</option>
+          <option value="doc">Documento</option>
+          <option value="img">Imagem</option>
+          <option value="zip">Arquivo Compactado</option>
+        </select>
+      </div>
+
+      {/* Cards de arquivos */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4" id="all-files">
+        {filteredFiles.length === 0 && (
+          <div className="col-span-full text-center text-gray-500">Nenhum arquivo encontrado.</div>
+        )}
+        {filteredFiles.map(([id, file]) => (
+          <div key={id} className="file-card bg-white rounded-lg shadow p-4 border-l-4 border-blue-500 flex flex-col gap-2" data-file-id={id} data-file-type={file.type}>
+            <h5 className="font-bold text-lg">{file.name}</h5>
+            <p className="text-sm text-gray-600">{file.description}</p>
+            <span className="text-xs text-gray-400">Atualizado: {file.date}</span>
+            {/* Botões de ação: editar, excluir, etc. */}
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
