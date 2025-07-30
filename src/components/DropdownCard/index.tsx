@@ -6,15 +6,7 @@ import {
   faThumbtack,
   faTrashAlt
 } from "@fortawesome/free-solid-svg-icons";
-
-export interface DropdownCardProps {
-  onEdit?: () => void;
-  onDownload?: () => void;
-  onPin?: () => void;
-  onUnpin?: () => void;
-  onDelete?: () => void;
-  pinLabel?: string;
-}
+import DropdownCardProps from "@/interfaces/DropdownCardProps";
 
 export default function DropdownCard({
   onEdit,
@@ -28,7 +20,7 @@ export default function DropdownCard({
     <div className="dropdown-menu absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10 border border-gray-200">
       {onEdit && (
         <button
-          className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+          className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer transition-all duration-300"
           onClick={onEdit}
         >
           <FontAwesomeIcon icon={faEdit} className="mr-2" /> Editar
@@ -36,7 +28,7 @@ export default function DropdownCard({
       )}
       {onDownload && (
         <button
-          className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+          className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer transition-all duration-300"
           onClick={onDownload}
         >
           <FontAwesomeIcon icon={faDownload} className="mr-2" /> Baixar
@@ -44,7 +36,7 @@ export default function DropdownCard({
       )}
       {onPin && (
         <button
-          className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+          className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer transition-all duration-300"
           onClick={onPin}
         >
           <FontAwesomeIcon icon={faThumbtack} className="mr-2" /> {pinLabel}
@@ -52,7 +44,7 @@ export default function DropdownCard({
       )}
       {onUnpin && (
         <button
-          className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+          className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer transition-all duration-300"
           onClick={onUnpin}
         >
           <FontAwesomeIcon icon={faThumbtack} className="mr-2" /> Desafixar
@@ -60,7 +52,7 @@ export default function DropdownCard({
       )}
       {onDelete && (
         <button
-          className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
+          className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100 cursor-pointer transition-all duration-300"
           onClick={onDelete}
         >
           <FontAwesomeIcon icon={faTrashAlt} className="mr-2" /> Excluir
