@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faEdit,
@@ -7,15 +7,19 @@ import {
   faTrashAlt
 } from "@fortawesome/free-solid-svg-icons";
 import DropdownCardProps from "@/interfaces/DropdownCardProps";
+import DeleteModal from "../modals/DeleteModal";
 
 export default function DropdownCard({
   onEdit,
   onDownload,
   onPin,
+
   onUnpin,
   onDelete,
   pinLabel = "Fixar"
 }: DropdownCardProps) {
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+
   return (
     <div className="dropdown-menu absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10 border border-gray-200">
       {onEdit && (
@@ -50,14 +54,23 @@ export default function DropdownCard({
           <FontAwesomeIcon icon={faThumbtack} className="mr-2" /> Desafixar
         </button>
       )}
-      {onDelete && (
-        <button
-          className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100 cursor-pointer transition-all duration-300"
-          onClick={onDelete}
-        >
-          <FontAwesomeIcon icon={faTrashAlt} className="mr-2" /> Excluir
-        </button>
-      )}
-    </div>
+        {onDelete && (
+          <>
+            <button
+              className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100 cursor-pointer transition-all duration-300"
+              onClick={() => setShowDeleteModal(true)}
+            >
+              <FontAwesomeIcon icon={faTrashAlt} className="mr-2" /> Excluir
+            </button>
+            <DeleteModal
+              isOpen={showDeleteModal}
+              onClose={() => setShowDeleteModal(false)}
+              onDelete={() => {
+                if (onDelete) onDelete();
+              }}
+            />
+          </>
+        )}
+      </div>
   );
-}
+} 
