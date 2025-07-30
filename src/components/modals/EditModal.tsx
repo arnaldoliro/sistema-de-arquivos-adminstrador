@@ -10,7 +10,11 @@ export default function EditModal({ isOpen, onClose, initialName = "", initialDe
 }) {
   const [name, setName] = useState(initialName);
   const [description, setDescription] = useState(initialDescription);
-
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState(false);
+  const [message, setMessage] = useState("");
+  
   const resetForm = () => {
     setName(initialName);
     setDescription(initialDescription);
@@ -19,10 +23,6 @@ export default function EditModal({ isOpen, onClose, initialName = "", initialDe
     setSuccess(false);
     setLoading(false);
   };
-  const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
-  const [error, setError] = useState(false);
-  const [message, setMessage] = useState("");
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();

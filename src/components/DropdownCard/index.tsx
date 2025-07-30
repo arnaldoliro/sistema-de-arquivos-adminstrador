@@ -8,12 +8,12 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import DropdownCardProps from "@/interfaces/DropdownCardProps";
 import DeleteModal from "../modals/DeleteModal";
+import ReactDOM from "react-dom";
 
 export default function DropdownCard({
   onEdit,
   onDownload,
   onPin,
-
   onUnpin,
   onDelete,
   pinLabel = "Fixar"
@@ -54,23 +54,29 @@ export default function DropdownCard({
           <FontAwesomeIcon icon={faThumbtack} className="mr-2" /> Desafixar
         </button>
       )}
-        {onDelete && (
-          <>
-            <button
-              className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100 cursor-pointer transition-all duration-300"
-              onClick={() => setShowDeleteModal(true)}
-            >
-              <FontAwesomeIcon icon={faTrashAlt} className="mr-2" /> Excluir
-            </button>
-            <DeleteModal
-              isOpen={showDeleteModal}
-              onClose={() => setShowDeleteModal(false)}
-              onDelete={() => {
-                if (onDelete) onDelete();
-              }}
-            />
-          </>
-        )}
+      {onDelete && (
+        <>
+          <button
+            className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100 cursor-pointer transition-all duration-300"
+            onClick={() => setShowDeleteModal(true)}
+          >
+            <FontAwesomeIcon icon={faTrashAlt} className="mr-2" /> Excluir
+          </button> 
+          {showDeleteModal && typeof window !== 'undefined' &&
+            ReactDOM.createPortal(
+              <DeleteModal
+                isOpen={showDeleteModal}
+                onClose={() => setShowDeleteModal(false)}
+                onDelete={() => {
+                  if (onDelete) onDelete();
+                  setShowDeleteModal(false);
+                }}
+              />,
+              document.body
+            )
+          }
+        </>
+      )}
       </div>
   );
 } 

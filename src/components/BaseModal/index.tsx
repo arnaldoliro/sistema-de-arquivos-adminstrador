@@ -1,20 +1,8 @@
 import React from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
-
-interface BaseModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  title: string;
-  children: React.ReactNode;
-  actions?: React.ReactNode;
-  loading?: boolean;
-  success?: boolean;
-  error?: boolean;
-  message?: string;
-  icon?: React.ReactNode;
-}
+import BaseModalProps from "@/interfaces/BaseModalProps";
 
 export default function BaseModal({
   isOpen,
