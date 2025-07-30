@@ -1,4 +1,4 @@
-import Filters from "@/types/filters"
+// import Filters from "@/types/filters"
 
 export async function uploadFile(payload: {
   nome: string
