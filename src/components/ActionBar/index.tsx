@@ -19,7 +19,7 @@ export default function ActionBar() {
         </div>
         <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
           <div className="relative">
-            <select id="filter-select" className="appearance-none bg-white border border-gray-300 rounded-lg py-2 pl-3 pr-10 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+            <select id="filter-select" className="appearance-none bg-white border border-gray-300 rounded-lg py-2 pl-3 pr-10 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 cursor-pointer">
               <option value="all">Todos os tipos</option>
               <option value="pdf">PDF</option>
               <option value="doc">Documentos</option>
@@ -32,11 +32,11 @@ export default function ActionBar() {
           </div>
           <button
             id="upload-button"
-            className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg flex items-center justify-center"
+            className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg flex items-center justify-center cursor-pointer transition-all duration-300"
             onClick={handleOpenUpload}
           >
             <FontAwesomeIcon icon={faUpload} className="mr-2" />
-            <span>Upload</span>
+            <span>Enviar Arquivo</span>
           </button>
         </div>
       </div>
