@@ -20,7 +20,7 @@ export default function AllFilesSection() {
 
   return (
     <div>
-      <h4 className="text-md font-medium text-gray-700 mb-4">Todos os Arquivos</h4>
+      <h4 className="text-xl text-gray-700 mb-4 font-bold">Todos os Arquivos</h4>
       <div id="all-files" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         {filesData.filter(file => !file.pinned).map((file: any) => (
           <CardFile
