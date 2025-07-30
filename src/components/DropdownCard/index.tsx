@@ -9,6 +9,7 @@ import {
 import DropdownCardProps from "@/interfaces/DropdownCardProps";
 import DeleteModal from "../modals/DeleteModal";
 import ReactDOM from "react-dom";
+import ToastNotification from "../ToastNotification";
 
 export default function DropdownCard({
   onEdit,
@@ -19,9 +20,25 @@ export default function DropdownCard({
   pinLabel = "Fixar"
 }: DropdownCardProps) {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [toast, setToast] = useState<{ message: string; icon?: React.ReactNode } | null>(null);
+
+  const showToast = (message: string, icon?: React.ReactNode) => {
+    setToast({ message, icon });
+    setTimeout(() => setToast(null), 2000);
+  };
 
   return (
-    <div className="dropdown-menu absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10 border border-gray-200">
+    <>
+      {toast && ReactDOM.createPortal(
+        <div className="fixed top-6 left-1/2 transform -translate-x-1/2 z-[9999]">
+          <div className="bg-gray-800 text-white px-4 py-3 rounded-lg shadow-lg flex items-center gap-3 animate-fade-in-out">
+            {toast.icon}
+            <span>{toast.message}</span>
+          </div>
+        </div>,
+        document.body
+      )}
+      <div className="dropdown-menu absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10 border border-gray-200">
       {onEdit && (
         <button
           className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer transition-all duration-300"
@@ -41,7 +58,10 @@ export default function DropdownCard({
       {onPin && (
         <button
           className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer transition-all duration-300"
-          onClick={onPin}
+          onClick={() => {
+            if (onPin) onPin();
+            showToast("Arquivo fixado com sucesso!", <FontAwesomeIcon icon={faThumbtack} className="mr-2 text-green-400" />);
+          }}
         >
           <FontAwesomeIcon icon={faThumbtack} className="mr-2" /> {pinLabel}
         </button>
@@ -49,7 +69,10 @@ export default function DropdownCard({
       {onUnpin && (
         <button
           className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer transition-all duration-300"
-          onClick={onUnpin}
+          onClick={() => {
+            if (onUnpin) onUnpin();
+            showToast("Arquivo desafixado!", <FontAwesomeIcon icon={faThumbtack} className="mr-2 text-yellow-400" />);
+          }}
         >
           <FontAwesomeIcon icon={faThumbtack} className="mr-2" /> Desafixar
         </button>
@@ -78,5 +101,6 @@ export default function DropdownCard({
         </>
       )}
       </div>
+    </>
   );
 } 
