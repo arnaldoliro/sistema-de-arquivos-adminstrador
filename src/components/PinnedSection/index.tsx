@@ -38,15 +38,16 @@ export default function PinnedFiles() {
   const handleDelete = (id: string) => {
     // TODO: Requisição para excluir
   };
-
+  
+  if (!files.length) {
+    return null;
+  }
   return (
     <div className="mb-8 pinned-section rounded-lg p-4">
       <h4 className="text-xl font-bold text-gray-700 mb-4">
         Arquivos Fixados
         <FontAwesomeIcon icon={faThumbtack} className="ml-2 text-blue-600" />
       </h4>
-      {loading && <div className="text-center py-8 text-gray-500">Carregando arquivos fixados...</div>}
-      {error && <div className="text-center py-8 text-red-500">{error}</div>}
       <div
         id="pinned-files"
         className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"
