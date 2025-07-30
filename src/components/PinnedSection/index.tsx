@@ -1,11 +1,29 @@
+import { useEffect, useState } from "react";
+import { getFiles } from "@/utils/api";
 import CardFile from "@/components/CardFile";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faThumbtack } from "@fortawesome/free-solid-svg-icons";
-import { filesData } from "@/data/FilesData";
 
-const pinnedFiles = filesData.filter(file => file.pinned);
+export default function PinnedFiles() {
+  const [files, setFiles] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-export default function PinnedSection() {
+  useEffect(() => {
+    async function fetchFiles() {
+      setLoading(true);
+      setError(null);
+      try {
+        const data = await getFiles({ page: 1 });
+        setFiles((data.files || data).filter((file: any) => file.fixado === true));
+      } catch (err: any) {
+        setError("Erro ao buscar arquivos fixados");
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchFiles();
+  }, []);
 
   // Funções para requisições futuras
   const handleEdit = (id: string) => {
@@ -27,11 +45,13 @@ export default function PinnedSection() {
         Arquivos Fixados
         <FontAwesomeIcon icon={faThumbtack} className="ml-2 text-blue-600" />
       </h4>
+      {loading && <div className="text-center py-8 text-gray-500">Carregando arquivos fixados...</div>}
+      {error && <div className="text-center py-8 text-red-500">{error}</div>}
       <div
         id="pinned-files"
         className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"
       >
-        {pinnedFiles.map(file => (
+        {files.map(file => (
           <CardFile
             key={file.id}
             id={file.id}
