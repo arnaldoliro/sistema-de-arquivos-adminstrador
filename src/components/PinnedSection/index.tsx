@@ -10,19 +10,15 @@ export default function PinnedSection() {
   // Funções para requisições futuras
   const handleEdit = (id: string) => {
     // TODO: Requisição para editar arquivo
-    alert(`Editar arquivo ${id}`);
   };
   const handleDownload = (id: string) => {
     // TODO: Requisição para download
-    alert(`Baixar arquivo ${id}`);
   };
   const handleUnpin = (id: string) => {
     // TODO: Requisição para desafixar
-    alert(`Desafixar arquivo ${id}`);
   };
   const handleDelete = (id: string) => {
     // TODO: Requisição para excluir
-    alert(`Excluir arquivo ${id}`);
   };
 
   return (

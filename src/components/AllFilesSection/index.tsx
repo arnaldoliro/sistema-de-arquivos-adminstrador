@@ -7,19 +7,15 @@ export default function AllFilesSection() {
   // Funções para requisições futuras
   const handleEdit = (id: string) => {
     // TODO: Requisição para editar arquivo
-    alert(`Editar arquivo ${id}`);
   };
   const handleDownload = (id: string) => {
     // TODO: Requisição para download
-    alert(`Baixar arquivo ${id}`);
   };
   const handlePin = (id: string) => {
     // TODO: Requisição para fixar
-    alert(`Fixar arquivo ${id}`);
   };
   const handleDelete = (id: string) => {
     // TODO: Requisição para excluir
-    alert(`Excluir arquivo ${id}`);
   };
 
   return (
