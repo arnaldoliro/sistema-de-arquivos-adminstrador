@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown, faUpload } from "@fortawesome/free-solid-svg-icons";
-import UploadModal from "../UploadModal";
+import UploadModal from "@/components/UploadModal";
 
 export default function ActionBar() {
   const [isUploadOpen, setIsUploadOpen] = useState(false);
