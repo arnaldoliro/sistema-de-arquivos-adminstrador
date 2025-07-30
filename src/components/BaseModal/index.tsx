@@ -1,5 +1,7 @@
 import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
 interface BaseModalProps {
   isOpen: boolean;
@@ -119,7 +121,7 @@ export default function BaseModal({
           <div className="flex justify-between items-center mb-4">
             <h3 className="text-xl font-semibold text-gray-800">{title}</h3>
             <button className="text-gray-500 hover:text-gray-700 transition-all duration-300 cursor-pointer" onClick={onClose}>
-              <span aria-label="Fechar">×</span>
+                <FontAwesomeIcon icon={faTimes} />
             </button>
           </div>
           {children}
