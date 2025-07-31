@@ -1,15 +1,36 @@
-
 "use client";
+import React from "react";
 import ActionBar from "@/components/ActionBar";
 import AllFilesSection from "@/components/AllFilesSection";
 import Navbar from "@/components/Navbar";
 import PinnedSection from "@/components/PinnedSection";
 import Sidebar from "@/components/Sidebar";
+import ToastNotification from "@/components/ToastNotification";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { FilesProvider } from "@/context/FilesContext";
 
 export default function Home() {
+  const [toast, setToast] = React.useState<{ message: string; icon?: React.ReactNode; trigger: boolean; id?: number }>({ message: "", icon: undefined, trigger: false, id: 0 });
+
+  // Função para disparar o toast
+  const toastTimeout = React.useRef<NodeJS.Timeout | null>(null);
+  const showToast = (message: string, icon?: React.ReactNode) => {
+    setToast({
+      message,
+      icon,
+      trigger: true,
+      id: Date.now()
+    });
+    if (toastTimeout.current) {
+      clearTimeout(toastTimeout.current);
+    }
+    toastTimeout.current = setTimeout(() => {
+      setToast(t => ({ ...t, trigger: false }));
+      toastTimeout.current = null;
+    }, 3000);
+  };
+
   return (
     <div className="min-h-screen flex">
       <Sidebar />
@@ -19,8 +40,10 @@ export default function Home() {
           <div className="max-w-7xl mx-auto">
             <ActionBar />
             <FilesProvider>
-              <PinnedSection />
-              <AllFilesSection />
+              {/* ToastNotification global */}
+              <ToastNotification message={toast.message} icon={toast.icon} trigger={toast.trigger} />
+              <PinnedSection showToast={showToast} />
+              <AllFilesSection showToast={showToast} />
             </FilesProvider>
             <div className="mt-8 flex justify-center">
               <nav className="flex items-center">

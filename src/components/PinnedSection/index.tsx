@@ -2,8 +2,9 @@ import CardFile from "@/components/CardFile";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faThumbtack } from "@fortawesome/free-solid-svg-icons";
 import { useFiles } from "@/context/FilesContext";
+import SectionFilesProps from "@/interfaces/SectionFilesProp";
 
-export default function PinnedFiles() {
+export default function PinnedFiles({ showToast }: SectionFilesProps) {
   const { files = [], loading, error, fixFile } = useFiles();
 
   // Funções para requisições futuras
@@ -13,8 +14,13 @@ export default function PinnedFiles() {
   const handleDownload = (id: string) => {
     // TODO: Requisição para download
   };
-  const handleUnpin = (id: string) => {
-    fixFile(Number(id), false);
+  const handleUnpin = async (id: string) => {
+    try {
+      await fixFile(Number(id), false);
+      if (showToast) showToast("Arquivo desafixado!", Date.now());
+    } catch (e) {
+      if (showToast) showToast("Erro ao desafixar arquivo!", Date.now());
+    }
   };
   const handleDelete = (id: string) => {
     // TODO: Requisição para excluir

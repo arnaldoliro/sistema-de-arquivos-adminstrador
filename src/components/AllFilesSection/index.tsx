@@ -1,8 +1,9 @@
 
 import CardFile from "@/components/CardFile";
 import { useFiles } from "@/context/FilesContext";
+import SectionFilesProps from "@/interfaces/SectionFilesProp";
 
-export default function AllFilesSection() {
+export default function AllFilesSection({ showToast }: SectionFilesProps) {
   const { files, loading, error, fixFile } = useFiles();
 
   // Funções para requisições futuras
@@ -12,8 +13,13 @@ export default function AllFilesSection() {
   const handleDownload = (id: string) => {
     // TODO: Requisição para download
   };
-  const handlePin = (id: string) => {
-    fixFile(Number(id), true);
+  const handlePin = async (id: string) => {
+    try {
+      await fixFile(Number(id), true);
+      if (showToast) showToast("Arquivo fixado com sucesso!", Date.now());
+    } catch (e) {
+      if (showToast) showToast("Erro ao fixar arquivo!", Date.now());
+    }
   };
   const handleDelete = (id: string) => {
     // TODO: Requisição para excluir
