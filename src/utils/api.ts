@@ -35,3 +35,20 @@ export async function getFiles(filters: Filters & { page: number; limit?: number
     throw err
   }
 }
+
+export async function fixFiles(id: number, isPinned: boolean) {
+  const response = await fetch(`http://localhost:3000/files/${id}/fix`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ isPinned }),
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.message || 'Erro ao fixar');
+  }
+
+  return await response.json();
+}
