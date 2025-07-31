@@ -1,28 +1,9 @@
 
 import CardFile from "@/components/CardFile";
-import { useEffect, useState } from "react";
-import { getFiles } from "@/utils/api";
+import { useFiles } from "@/context/FilesContext";
 
 export default function AllFilesSection() {
-  const [files, setFiles] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    async function fetchFiles() {
-      setLoading(true);
-      setError(null);
-      try {
-        const data = await getFiles({ page: 1 });
-        setFiles(data.files || data);
-      } catch (err: any) {
-        setError("Erro ao buscar arquivos");
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchFiles();
-  }, []);
+  const { files, loading, error, fixFile } = useFiles();
 
   // Funções para requisições futuras
   const handleEdit = (id: string) => {
@@ -32,7 +13,7 @@ export default function AllFilesSection() {
     // TODO: Requisição para download
   };
   const handlePin = (id: string) => {
-    // TODO: Requisição para fixar
+    fixFile(Number(id), true);
   };
   const handleDelete = (id: string) => {
     // TODO: Requisição para excluir

@@ -7,6 +7,7 @@ import PinnedSection from "@/components/PinnedSection";
 import Sidebar from "@/components/Sidebar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
+import { FilesProvider } from "@/context/FilesContext";
 
 export default function Home() {
   return (
@@ -17,8 +18,10 @@ export default function Home() {
         <main className="flex-1 overflow-y-auto bg-gray-50 p-4">
           <div className="max-w-7xl mx-auto">
             <ActionBar />
-            <PinnedSection />
-            <AllFilesSection />
+            <FilesProvider>
+              <PinnedSection />
+              <AllFilesSection />
+            </FilesProvider>
             <div className="mt-8 flex justify-center">
               <nav className="flex items-center">
                 <button className="cursor-pointer px-3 py-1 rounded-l-md border hover:text-blue-600 border-gray-300 bg-white text-gray-500 hover:bg-gray-50">
