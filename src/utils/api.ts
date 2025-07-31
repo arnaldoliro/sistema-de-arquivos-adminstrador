@@ -1,5 +1,7 @@
 import Filters from '../types/Filters'
 
+
+// Listar os Arquivos
 export async function getFiles(filters: Filters & { page: number; limit?: number}) {
   const url = new URL("http://localhost:3000/files")
 

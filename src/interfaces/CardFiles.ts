@@ -1,9 +1,10 @@
 export default interface CardFileProps {
   id: string;
-  name: string;
-  description: string;
+  nome: string;
+  descricao: string;
   size: string;
-  updated: string;
+  categoria: string;
+  criadoEm: Date;
   icon: string;
   type: string;
   onEdit?: (id: string) => void;

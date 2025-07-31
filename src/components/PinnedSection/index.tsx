@@ -56,10 +56,11 @@ export default function PinnedFiles() {
           <CardFile
             key={file.id}
             id={file.id}
-            name={file.name}
-            description={file.description}
+            nome={file.nome}
+            descricao={file.descricao}
+            categoria={file.categoria}
             size={file.size}
-            updated={file.updated}
+            criadoEm={file.criadoEm}
             icon={file.icon}
             type={file.type}
             onEdit={handleEdit}

@@ -67,14 +67,15 @@ export default function AllFilesSection() {
     <div>
       <h4 className="text-xl text-gray-700 mb-4 font-bold">Todos os Arquivos</h4>
       <div id="all-files" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-        {files.filter(file => !file.pinned).map((file: any) => (
+        {files.filter(file => file.fixado === false).map((file: any) => (
           <CardFile
             key={file.id}
             id={file.id}
-            name={file.name}
-            description={file.description}
+            nome={file.nome}
+            descricao={file.descricao}
+            categoria={file.categoria}
             size={file.size}
-            updated={file.updated}
+            criadoEm={file.criadoEm}
             icon={file.icon}
             type={file.type}
             onEdit={handleEdit}

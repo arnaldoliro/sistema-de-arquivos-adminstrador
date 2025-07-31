@@ -12,10 +12,11 @@ import EditModal from "../modals/EditModal";
 export default function CardFile(props: import("../../interfaces/CardFiles").default & { pinned?: boolean }) {
   const {
     id,
-    name,
-    description,
+    nome,
+    descricao,
+    categoria,
     size,
-    updated,
+    criadoEm,
     icon,
     type,
     onEdit,
@@ -26,6 +27,14 @@ export default function CardFile(props: import("../../interfaces/CardFiles").def
     pinLabel = "Fixar",
     pinned
   } = props;
+        // Converte criadoEm para dd/mm/yyyy
+        function formatDate(date: string | Date): string {
+          const d = new Date(date);
+          const day = String(d.getDate()).padStart(2, '0');
+          const month = String(d.getMonth() + 1).padStart(2, '0');
+          const year = d.getFullYear();
+          return `${day}/${month}/${year}`;
+        }
   const [openDropdown, setOpenDropdown] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
@@ -52,14 +61,14 @@ export default function CardFile(props: import("../../interfaces/CardFiles").def
     <>
       <div
         ref={cardRef}
-        className={`file-card bg-white rounded-lg shadow p-4 border-l-4 ${pinned ? "border-blue-500" : "border-transparent"} hover:scale-105 transition-transform duration-300`}
+        className={`w-fit bg-white rounded-lg shadow p-4 border-l-4 flex flex-col h-full ${pinned ? "border-blue-500" : "border-transparent"} hover:scale-105 transition-transform duration-300`}
       >
         <div className="flex justify-between items-start mb-3">
           <div className={`file-icon ${type}-icon`}>
-            {type === "pdf" && <FontAwesomeIcon color="red" size="2xl" icon={faFilePdf} />}
-            {type === "img" && <FontAwesomeIcon color="green" size="2xl" icon={faFileImage} />}
-            {type === "doc" && <FontAwesomeIcon color="blue" size="2xl" icon={faFileWord} />}
-            {type === "zip" && <FontAwesomeIcon color="orange" size="2xl" icon={faFileArchive} />}
+            {categoria === "Documento" && <FontAwesomeIcon color="red" size="2xl" icon={faFilePdf} />}
+            {categoria === "Imagem" && <FontAwesomeIcon color="green" size="2xl" icon={faFileImage} />}
+            {categoria === "Planilha" && <FontAwesomeIcon color="blue" size="2xl" icon={faFileWord} />}
+            {categoria === "Outros" && <FontAwesomeIcon color="orange" size="2xl" icon={faFileArchive} />}
           </div>
           <div className="dropdown relative">
             <button
@@ -81,18 +90,18 @@ export default function CardFile(props: import("../../interfaces/CardFiles").def
             )}
           </div>
         </div>
-        <h5 className="font-medium text-gray-800 mb-1">{name}</h5>
-        <p className="text-sm text-gray-500 mb-3">{description}</p>
-        <div className="flex justify-between items-center text-xs text-gray-500">
-          <span>{size}</span>
-          <span>Atualizado: {updated}</span>
+        <h5 className="text-gray-800 mb-1 font-semibold break-words">{nome}</h5>
+        <p className="text-sm text-gray-500 mb-3 break-words">{descricao}</p>
+        <div className="flex justify-between flex-wrap gap-2 mt-auto mb-0 text-xs text-gray-500">
+          <span className="break-words">{categoria}</span>
+          <span className="break-words">Criado em: {formatDate(criadoEm)}</span>
         </div>
       </div>
       <EditModal
         isOpen={showEditModal}
         onClose={() => setShowEditModal(false)}
-        initialName={name}
-        initialDescription={description}
+        initialName={nome}
+        initialDescription={descricao}
         onSave={onEdit ? () => onEdit(id) : undefined}
       />
     </>
