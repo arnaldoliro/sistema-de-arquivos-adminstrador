@@ -13,12 +13,12 @@ const ToastNotification: React.FC<ToastNotificationProps> = ({ message, icon, tr
           animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0, x: 50 }}
           transition={{ duration: 0.4 }}
-          className="fixed top-6 right-6 z-[9999] bg-gray-800 text-white px-4 py-3 rounded-t-lg rounded-b-sm shadow-lg"
+          className="fixed top-6 right-6 z-[9999] bg-gray-800 text-white px-4 py-3 rounded-t-lg rounded-b-sm shadow-lg cursor-default"
           style={{ pointerEvents: trigger ? "auto" : "none" }}
         >
           <div className="flex items-center">
             {icon && <span className="mr-3">{icon}</span>}
-            <span>{`toast: ${message}`}</span>
+            <span>{message}</span>
           </div>
           {/* Barra de progresso animada */}
           <motion.div

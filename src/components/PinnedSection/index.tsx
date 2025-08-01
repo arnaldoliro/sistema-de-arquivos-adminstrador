@@ -1,6 +1,6 @@
 import CardFile from "@/components/CardFile";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faThumbtack } from "@fortawesome/free-solid-svg-icons";
+import { faThumbtack, faCircleCheck, faCircleXmark } from "@fortawesome/free-solid-svg-icons";
 import { useFiles } from "@/context/FilesContext";
 import SectionFilesProps from "@/interfaces/SectionFilesProp";
 
@@ -17,9 +17,9 @@ export default function PinnedFiles({ showToast }: SectionFilesProps) {
   const handleUnpin = async (id: string) => {
     try {
       await fixFile(Number(id), false);
-      if (showToast) showToast("Arquivo desafixado!", Date.now());
+      if (showToast) showToast("Arquivo desafixado com sucesso!", <FontAwesomeIcon icon={faCircleCheck} className="text-green-500" />);
     } catch (e) {
-      if (showToast) showToast("Erro ao desafixar arquivo!", Date.now());
+      if (showToast) showToast("Erro ao desafixar arquivo!", <FontAwesomeIcon icon={faCircleXmark} className="text-red-500" />);
     }
   };
   const handleDelete = (id: string) => {

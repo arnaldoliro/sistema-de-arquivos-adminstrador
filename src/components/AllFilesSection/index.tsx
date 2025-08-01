@@ -2,6 +2,8 @@
 import CardFile from "@/components/CardFile";
 import { useFiles } from "@/context/FilesContext";
 import SectionFilesProps from "@/interfaces/SectionFilesProp";
+import { faCircleCheck, faCircleXmark} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default function AllFilesSection({ showToast }: SectionFilesProps) {
   const { files, loading, error, fixFile } = useFiles();
@@ -16,9 +18,9 @@ export default function AllFilesSection({ showToast }: SectionFilesProps) {
   const handlePin = async (id: string) => {
     try {
       await fixFile(Number(id), true);
-      if (showToast) showToast("Arquivo fixado com sucesso!", Date.now());
+      if (showToast) showToast("Arquivo fixado com sucesso!", <FontAwesomeIcon icon={faCircleCheck} className="text-green-500" />);
     } catch (e) {
-      if (showToast) showToast("Erro ao fixar arquivo!", Date.now());
+      if (showToast) showToast("Erro ao fixar arquivo!", <FontAwesomeIcon icon={faCircleXmark} className="text-red-500" />);
     }
   };
   const handleDelete = (id: string) => {
