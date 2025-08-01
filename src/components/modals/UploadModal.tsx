@@ -2,6 +2,7 @@ import React, { useState, useRef } from "react";
 import BaseModal from "../BaseModal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCloudUploadAlt, faCheck, faTimes } from "@fortawesome/free-solid-svg-icons";
+import { uploadFile } from "@/utils/api"; // ajuste o caminho se necessário
 
 export default function UploadModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
   const [nome, setNome] = useState("");
@@ -11,6 +12,8 @@ export default function UploadModal({ isOpen, onClose }: { isOpen: boolean; onCl
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
   const [mensagem, setMensagem] = useState("");
+  const [categoria, setCategoria] = useState("");
+  const [lotacao, setLotacao] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const resetForm = () => {
@@ -18,6 +21,8 @@ export default function UploadModal({ isOpen, onClose }: { isOpen: boolean; onCl
     setDescricao("");
     setArquivo(null);
     setMensagem("");
+    setCategoria("");
+    setLotacao("");
   };
 
   const handleUpload = async (e: React.FormEvent) => {
@@ -31,14 +36,44 @@ export default function UploadModal({ isOpen, onClose }: { isOpen: boolean; onCl
       }, 2000);
       return;
     }
+    if (!nome || !categoria || !lotacao) {
+      setMensagem("Preencha todos os campos obrigatórios.");
+      setError(true);
+      setTimeout(() => {
+        setError(false);
+        setMensagem("");
+      }, 2000);
+      return;
+    }
     setLoading(true);
     setError(false);
     setSuccess(false);
     setMensagem("");
-    await new Promise((resolve) => setTimeout(resolve, 1200));
-    const isSuccess = Math.random() > 0.3;
-    setLoading(false);
-    if (isSuccess) {
+
+    try {
+      // Lê o arquivo como base64
+      const fileContent = await new Promise<string>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result as string);
+        reader.onerror = reject;
+        reader.readAsDataURL(arquivo);
+      });
+
+      // Remove o prefixo "data:...;base64,"
+      const base64 = fileContent.split(",")[1];
+
+      await uploadFile({
+        nome,
+        descricao,
+        categoria,
+        lotacao,
+        conteudo: base64,
+        originalFileName: arquivo.name,
+        mimeType: arquivo.type,
+        isPinned: false,
+      });
+
+      setLoading(false);
       setSuccess(true);
       setMensagem("Arquivo enviado com sucesso!");
       setTimeout(() => {
@@ -47,7 +82,8 @@ export default function UploadModal({ isOpen, onClose }: { isOpen: boolean; onCl
         onClose();
         resetForm();
       }, 1800);
-    } else {
+    } catch (err) {
+      setLoading(false);
       setError(true);
       setMensagem("Erro ao enviar arquivo!");
       setTimeout(() => {
@@ -95,6 +131,24 @@ export default function UploadModal({ isOpen, onClose }: { isOpen: boolean; onCl
         <div className="mb-4">
           <label htmlFor="file-description" className="block text-sm font-medium text-gray-700 mb-1">Descrição</label>
           <textarea id="file-description" value={descricao} onChange={e => setDescricao(e.target.value)} rows={3} className="text-gray-500 w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300"></textarea>
+        </div>
+        <div className="mb-4">
+            <label htmlFor="categoria" className="block text-sm font-medium text-gray-700 mb-1">Categoria</label>
+            <select id="categoria" value={categoria} onChange={e => setCategoria(e.target.value)} className="text-gray-500 w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300">
+              <option value="">Selecione uma categoria</option>
+              <option value="Documento">Documentos</option>
+              <option value="Imagem">Imagens</option>
+              <option value="Planilha">Planilhas</option>
+              <option value="Apresentacao">Apresentação</option>
+              <option value="Outros">Outros</option>
+            </select>
+        </div>
+        <div className="mb-4">
+          <label htmlFor="lotacao" className="block text-sm font-medium text-gray-700 mb-1">Lotação</label>
+          <select id="lotacao" value={lotacao} onChange={e => setLotacao(e.target.value)} className="text-gray-500 w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300">
+            <option value="">Selecione a lotação</option>
+            <option value="Gerência Comercial">Gerência Comercial</option>
+          </select>
         </div>
         <div className="flex justify-end">
           <button type="button" className="mr-2 px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-md cursor-pointer transition-all duration-300" onClick={() => { onClose(); resetForm(); }} disabled={loading}>Cancelar</button>
