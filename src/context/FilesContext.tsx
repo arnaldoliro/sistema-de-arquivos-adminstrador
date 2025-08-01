@@ -29,7 +29,7 @@ export const useFiles = () => {
   return ctx;
 };
 
-export const FilesProvider = ({ children }: { children: ReactNode }) => {
+export const FilesProvider = ({ children, search = "" }: { children: ReactNode; search?: string }) => {
   const [files, setFiles] = useState<File[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -38,7 +38,7 @@ export const FilesProvider = ({ children }: { children: ReactNode }) => {
     setLoading(true);
     setError(null);
     try {
-      const data = await getFiles({ page: 1 });
+      const data = await getFiles({ page: 1, search });
       setFiles(data.files || data);
     } catch (err: any) {
       setError("Erro ao buscar arquivos");
@@ -62,7 +62,7 @@ export const FilesProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     refreshFiles();
-  }, []);
+  }, [search]);
 
   return (
     <FilesContext.Provider value={{ files, loading, error, refreshFiles, fixFile }}>

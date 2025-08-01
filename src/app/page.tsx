@@ -12,6 +12,7 @@ import { FilesProvider } from "@/context/FilesContext";
 
 export default function Home() {
   const [toast, setToast] = React.useState<{ message: string; icon?: React.ReactNode; trigger: boolean; id?: number }>({ message: "", icon: undefined, trigger: false, id: 0 });
+  const [search, setSearch] = React.useState("");
 
   // Função para disparar o toast
   const toastTimeout = React.useRef<NodeJS.Timeout | null>(null);
@@ -35,11 +36,11 @@ export default function Home() {
     <div className="min-h-screen flex">
       <Sidebar />
       <div className="flex-1 flex flex-col min-h-screen">
-        <Navbar />
+        <Navbar onSearch={setSearch} />
         <main className="flex-1 overflow-y-auto bg-gray-50 p-4">
           <div className="max-w-7xl mx-auto">
             <ActionBar />
-            <FilesProvider>
+            <FilesProvider search={search}>
               {/* ToastNotification global */}
               <ToastNotification message={toast.message} icon={toast.icon} trigger={toast.trigger} />
               <PinnedSection showToast={showToast} />
