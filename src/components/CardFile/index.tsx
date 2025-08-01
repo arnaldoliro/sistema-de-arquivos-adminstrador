@@ -59,7 +59,7 @@ export default function CardFile(props: import("../../interfaces/CardFiles").def
     <>
       <div
         ref={cardRef}
-        className={`w-fit bg-white rounded-lg shadow p-4 border-l-4 flex flex-col h-full ${fixado ? "border-blue-500" : "border-transparent"} hover:scale-105 transition-transform duration-300`}
+        className={`w-full bg-white rounded-lg shadow p-4 border-l-4 flex flex-col h-full ${fixado ? "border-blue-500" : "border-transparent"} hover:scale-105 transition-transform duration-300`}
       >
         <div className="flex justify-between items-start mb-3">
           <div className={`file-icon ${type}-icon`}>
