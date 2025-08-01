@@ -3,6 +3,8 @@ import BaseModal from "../BaseModal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCloudUploadAlt, faCheck, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { uploadFile } from "@/utils/api"; // ajuste o caminho se necessário
+import { useFiles } from "@/context/FilesContext";
+
 
 export default function UploadModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
   const [nome, setNome] = useState("");
@@ -15,6 +17,7 @@ export default function UploadModal({ isOpen, onClose }: { isOpen: boolean; onCl
   const [categoria, setCategoria] = useState("");
   const [lotacao, setLotacao] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const { refreshFiles } = useFiles();
 
   const resetForm = () => {
     setNome("");
@@ -72,6 +75,7 @@ export default function UploadModal({ isOpen, onClose }: { isOpen: boolean; onCl
         mimeType: arquivo.type,
         isPinned: false,
       });
+      await refreshFiles();
 
       setLoading(false);
       setSuccess(true);

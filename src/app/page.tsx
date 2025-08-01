@@ -36,16 +36,15 @@ export default function Home() {
     <div className="min-h-screen flex">
       <Sidebar />
       <div className="flex-1 flex flex-col min-h-screen">
+       <FilesProvider search={search}>
         <Navbar onSearch={setSearch} />
         <main className="flex-1 overflow-y-auto bg-gray-50 p-4">
           <div className="max-w-7xl mx-auto">
             <ActionBar />
-            <FilesProvider search={search}>
               {/* ToastNotification global */}
               <ToastNotification message={toast.message} icon={toast.icon} trigger={toast.trigger} />
               <PinnedSection showToast={showToast} />
               <AllFilesSection showToast={showToast} />
-            </FilesProvider>
             <div className="mt-8 flex justify-center">
               <nav className="flex items-center">
                 <button className="cursor-pointer px-3 py-1 rounded-l-md border hover:text-blue-600 border-gray-300 bg-white text-gray-500 hover:bg-gray-50">
@@ -67,6 +66,7 @@ export default function Home() {
             </div>
           </div>
         </main>
+       </FilesProvider>
       </div>
     </div>
   );
