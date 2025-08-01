@@ -43,12 +43,13 @@ export default function PinnedFiles({ showToast }: SectionFilesProps) {
         {pinnedFiles.map(file => (
           <CardFile
             key={file.id}
-            id={file.id}
+            id={String(file.id)}
             nome={file.nome}
             descricao={file.descricao}
             categoria={file.categoria}
             size={file.size}
-            criadoEm={file.criadoEm}
+            criadoEm={new Date(file.criadoEm)}
+            fixado={file.fixado}
             icon={file.icon}
             type={file.type}
             onEdit={handleEdit}

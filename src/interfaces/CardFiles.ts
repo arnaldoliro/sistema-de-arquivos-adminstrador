@@ -13,4 +13,5 @@ export default interface CardFileProps {
   onUnpin?: (id: string) => void;
   onDelete?: (id: string) => void;
   pinLabel?: string;
+  fixado?: boolean;
 }
