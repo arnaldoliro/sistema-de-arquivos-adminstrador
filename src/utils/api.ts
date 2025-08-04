@@ -119,3 +119,50 @@ export async function downloadArquivo(id: string): Promise<void> {
     console.error('Erro ao baixar arquivo:', error);
   }
 }
+
+export async function deleteFile(id: string): Promise<void> {
+  try {
+    const response = await fetch(`http://localhost:3000/files/${id}`, {
+      method: 'DELETE',
+    });
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || 'Erro ao excluir arquivo');
+    }
+    return await response.json();
+  } catch (error: unknown) {
+    console.error('Erro ao excluir arquivo:', error);
+    throw error;
+  }
+}
+
+export async function editFile(id: string, payload: {
+  nome: string
+  descricao: string
+  categoria: string
+  lotacao: string
+  conteudo: string
+  originalFileName: string
+  mimeType: string
+  isPinned: boolean
+}): Promise<void> {
+  try {
+    const response = await fetch(`http://localhost:3000/files/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || 'Erro ao editar arquivo');
+    }
+
+    return await response.json();
+  } catch (error: unknown) {
+    console.error('Erro ao editar arquivo:', error);
+    throw error;
+  }
+}
