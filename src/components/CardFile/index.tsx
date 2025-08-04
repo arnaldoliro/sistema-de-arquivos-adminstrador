@@ -99,11 +99,16 @@ export default function CardFile(props: import("../../interfaces/CardFiles").def
         </div>
       </div>
       <EditModal
+        fileId={id}
         isOpen={showEditModal}
         onClose={() => setShowEditModal(false)}
         initialName={nome}
         initialDescription={descricao}
-        onSave={onEdit ? () => onEdit(id) : undefined}
+        onSave={(newName, newDescription) => {
+          if (onEdit) {
+            onEdit(id, newName, newDescription);
+          }
+        }}
       />
     </>
   );

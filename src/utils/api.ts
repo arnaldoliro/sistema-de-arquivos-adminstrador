@@ -136,19 +136,14 @@ export async function deleteFile(id: string): Promise<void> {
   }
 }
 
-export async function editFile(id: string, payload: {
+export async function editFile(payload: {
+  id: number
   nome: string
   descricao: string
-  categoria: string
-  lotacao: string
-  conteudo: string
-  originalFileName: string
-  mimeType: string
-  isPinned: boolean
 }): Promise<void> {
   try {
-    const response = await fetch(`http://localhost:3000/files/${id}`, {
-      method: 'PUT',
+    const response = await fetch(`http://localhost:3000/files/update`, {
+      method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
       },

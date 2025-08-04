@@ -7,7 +7,7 @@ export default interface CardFileProps {
   criadoEm: Date;
   icon: string;
   type: string;
-  onEdit?: (id: string) => void;
+  onEdit?: (id: number, name: string, description: string) => void;
   onDownload?: (id: string) => void;
   onPin?: (id: string) => void;
   onUnpin?: (id: string) => void;

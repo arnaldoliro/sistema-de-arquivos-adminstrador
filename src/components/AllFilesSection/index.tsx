@@ -2,16 +2,29 @@
 import CardFile from "@/components/CardFile";
 import { useFiles } from "@/context/FilesContext";
 import SectionFilesProps from "@/interfaces/SectionFilesProp";
+import { editFile } from "@/utils/api";
 import { faCircleCheck, faCircleXmark} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default function AllFilesSection({ showToast, onRequestDelete }: SectionFilesProps) {
   const { files, loading, error, fixFile } = useFiles();
 
-  // Funções para requisições futuras
-  const handleEdit = (id: string) => {
-    // TODO: Requisição para editar arquivo
-  };
+  const {refreshFiles} = useFiles();
+
+  const handleEdit = async (id: number, newName: string, newDescription: string) => {
+  try {
+    await editFile({
+      id,
+      nome: newName,
+      descricao: newDescription
+    });
+    if (refreshFiles) {
+      await refreshFiles();
+    }
+  } catch (error) {
+    console.error("Erro ao editar arquivo:", error);
+  }
+};
   const handleDownload = (id: string) => {
     // TODO: Requisição para download
   };
@@ -79,3 +92,4 @@ export default function AllFilesSection({ showToast, onRequestDelete }: SectionF
     </div>
   );
 }
+
