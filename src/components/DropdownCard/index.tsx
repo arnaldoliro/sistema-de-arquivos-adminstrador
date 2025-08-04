@@ -77,7 +77,7 @@ export default function DropdownCard({
           <FontAwesomeIcon icon={faThumbtack} className="mr-2" /> Desafixar
         </button>
       )}
-      {onDelete && (
+      {onRequestDelete && (
         <button
           className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100 cursor-pointer transition-all duration-300"
           onClick={() => onRequestDelete(id)}

@@ -2,15 +2,9 @@ import React, { useState } from "react";
 import BaseModal from "../BaseModal";
 import { editFile } from "@/utils/api";
 import { useFiles } from "@/context/FilesContext";
+import EditModalProps from "@/interfaces/EditModalProps";
 
-export default function EditModal({ isOpen, onClose, initialName = "", initialDescription = "", fileId, onSave }: {
-  isOpen: boolean;
-  onClose: () => void;
-  initialName?: string;
-  initialDescription?: string;
-  fileId: number;
-  onSave?: (name: string, description: string) => void;
-}) {
+export default function EditModal({ isOpen, onClose, initialName = "", initialDescription = "", fileId, onSave }: EditModalProps) {
   const [name, setName] = useState(initialName);
   const [description, setDescription] = useState(initialDescription);
   const [loading, setLoading] = useState(false);

@@ -3,14 +3,26 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faThumbtack, faCircleCheck, faCircleXmark } from "@fortawesome/free-solid-svg-icons";
 import { useFiles } from "@/context/FilesContext";
 import SectionFilesProps from "@/interfaces/SectionFilesProp";
+import { editFile } from "@/utils/api";
 
 export default function PinnedFiles({ showToast }: SectionFilesProps) {
   const { files = [], loading, error, fixFile } = useFiles();
+  const { refreshFiles } = useFiles();
 
-  // Funções para requisições futuras
-  const handleEdit = (id: string) => {
-    // TODO: Requisição para editar arquivo
-  };
+ const handleEdit = async (id: number, newName: string, newDescription: string) => {
+   try {
+     await editFile({
+       id,
+       nome: newName,
+       descricao: newDescription
+     });
+     if (refreshFiles) {
+       await refreshFiles();
+     }
+   } catch (error) {
+     console.error("Erro ao editar arquivo:", error);
+   }
+ };
   const handleDownload = (id: string) => {
     // TODO: Requisição para download
   };

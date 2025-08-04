@@ -1,10 +1,10 @@
 export default interface DropdownCardProps {
-  id: string;
+  id: any;
   onEdit?: () => void;
   onDownload?: () => void;
   onPin?: () => void;
   onUnpin?: () => void;
   onDelete?: () => void;
-  onRequestDelete: (id: string) => void;
+  onRequestDelete?: (id: string) => void;
   pinLabel?: string;
 }
