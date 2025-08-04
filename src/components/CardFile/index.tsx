@@ -10,6 +10,9 @@ import {
 import DropdownCard from "../DropdownCard";
 import EditModal from "../modals/EditModal";
 export default function CardFile(props: import("../../interfaces/CardFiles").default & { fixado?: boolean }) {
+  const [openDropdown, setOpenDropdown] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const cardRef = useRef<HTMLDivElement>(null);
   const {
     id,
     nome,
@@ -23,19 +26,22 @@ export default function CardFile(props: import("../../interfaces/CardFiles").def
     onUnpin,
     onDelete,
     pinLabel = "Fixar",
-    fixado
+    fixado,
+    onRequestDelete
   } = props;
-        // Converte criadoEm para dd/mm/yyyy
-        function formatDate(date: string | Date): string {
-          const d = new Date(date);
-          const day = String(d.getDate()).padStart(2, '0');
-          const month = String(d.getMonth() + 1).padStart(2, '0');
-          const year = d.getFullYear();
-          return `${day}/${month}/${year}`;
-        }
-  const [openDropdown, setOpenDropdown] = useState(false);
-  const [showEditModal, setShowEditModal] = useState(false);
-  const cardRef = useRef<HTMLDivElement>(null);
+    
+  const handleEditClick = () => {
+    setShowEditModal(true);
+    setOpenDropdown(false);
+  };
+  
+  function formatDate(date: string | Date): string {
+    const d = new Date(date);
+    const day = String(d.getDate()).padStart(2, '0');
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const year = d.getFullYear();
+    return `${day}/${month}/${year}`;
+  }
 
   useEffect(() => {
     if (!openDropdown) return;
@@ -49,11 +55,6 @@ export default function CardFile(props: import("../../interfaces/CardFiles").def
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [openDropdown]);
-
-  const handleEditClick = () => {
-    setShowEditModal(true);
-    setOpenDropdown(false);
-  };
 
   return (
     <>
@@ -84,6 +85,7 @@ export default function CardFile(props: import("../../interfaces/CardFiles").def
                 onPin={onPin ? () => { onPin(id); setOpenDropdown(false); } : undefined}
                 onUnpin={onUnpin ? () => { onUnpin(id); setOpenDropdown(false); } : undefined}
                 onDelete={onDelete ? () => { onDelete(id); setOpenDropdown(false); } : undefined}
+                onRequestDelete={onRequestDelete}
                 pinLabel={pinLabel}
               />
             )}

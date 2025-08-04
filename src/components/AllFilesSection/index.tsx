@@ -5,7 +5,7 @@ import SectionFilesProps from "@/interfaces/SectionFilesProp";
 import { faCircleCheck, faCircleXmark} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-export default function AllFilesSection({ showToast }: SectionFilesProps) {
+export default function AllFilesSection({ showToast, onRequestDelete }: SectionFilesProps) {
   const { files, loading, error, fixFile } = useFiles();
 
   // Funções para requisições futuras
@@ -72,6 +72,7 @@ export default function AllFilesSection({ showToast }: SectionFilesProps) {
             onPin={handlePin}
             onDelete={handleDelete}
             pinLabel="Fixar"
+            onRequestDelete={onRequestDelete} 
           />
         ))}
       </div>

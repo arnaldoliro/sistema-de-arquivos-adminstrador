@@ -7,12 +7,16 @@ import PinnedSection from "@/components/PinnedSection";
 import Sidebar from "@/components/Sidebar";
 import ToastNotification from "@/components/ToastNotification";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faChevronLeft, faChevronRight, faExclamationTriangle } from "@fortawesome/free-solid-svg-icons";
 import { FilesProvider } from "@/context/FilesContext";
+import { deleteFile } from "@/utils/api";
+import DeleteModal from "@/components/modals/DeleteModal";
 
 export default function Home() {
   const [toast, setToast] = React.useState<{ message: string; icon?: React.ReactNode; trigger: boolean; id?: number }>({ message: "", icon: undefined, trigger: false, id: 0 });
   const [search, setSearch] = React.useState("");
+  const [modalOpen, setModalOpen] = React.useState(false);
+  const [idToDelete, setIdToDelete] = React.useState<string | null>(null);
 
   // Função para disparar o toast
   const toastTimeout = React.useRef<NodeJS.Timeout | null>(null);
@@ -32,6 +36,29 @@ export default function Home() {
     }, 3000);
   };
 
+  function openDeleteModal(id: string) {
+  setIdToDelete(id);
+  setModalOpen(true);
+  }
+
+  function closeDeleteModal() {
+    setModalOpen(false);
+    setIdToDelete(null);
+  }
+
+  async function handleDelete() {
+  if (!idToDelete) return;
+  try {
+    await deleteFile(idToDelete);
+    showToast("Arquivo excluído com sucesso!", <FontAwesomeIcon icon={faCheck} className="text-green-500" />);
+    closeDeleteModal();
+    setIdToDelete(null);
+
+  } catch (error) {
+    showToast("Erro ao excluir arquivo!", <FontAwesomeIcon icon={faExclamationTriangle} className="text-red-400" />);
+  }
+}
+
   return (
     <div className="min-h-screen flex">
       <Sidebar />
@@ -42,9 +69,20 @@ export default function Home() {
           <div className="max-w-7xl mx-auto">
             <ActionBar />
               {/* ToastNotification global */}
+              <DeleteModal
+                isOpen={modalOpen}
+                id={idToDelete ?? ""}
+                onClose={closeDeleteModal}
+                onDelete={handleDelete}
+              />
               <ToastNotification message={toast.message} icon={toast.icon} trigger={toast.trigger} />
-              <PinnedSection showToast={showToast} />
-              <AllFilesSection showToast={showToast} />
+              <PinnedSection 
+                showToast={showToast} 
+                onRequestDelete={openDeleteModal} />
+              <AllFilesSection
+                showToast={showToast}
+                onRequestDelete={openDeleteModal}
+              />
             <div className="mt-8 flex justify-center">
               <nav className="flex items-center">
                 <button className="cursor-pointer px-3 py-1 rounded-l-md border hover:text-blue-600 border-gray-300 bg-white text-gray-500 hover:bg-gray-50">

@@ -7,9 +7,7 @@ import {
   faTrashAlt
 } from "@fortawesome/free-solid-svg-icons";
 import DropdownCardProps from "@/interfaces/DropdownCardProps";
-import DeleteModal from "../modals/DeleteModal";
 import ReactDOM from "react-dom";
-import ToastNotification from "../ToastNotification";
 import { downloadArquivo } from "@/utils/api";
 
 export default function DropdownCard({
@@ -19,9 +17,9 @@ export default function DropdownCard({
   onPin,
   onUnpin,
   onDelete,
-  pinLabel = "Fixar"
-}: DropdownCardProps & { id: string }) {
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  pinLabel = "Fixar",
+  onRequestDelete
+}: DropdownCardProps) {
   const [toast, setToast] = useState<{ message: string; icon?: React.ReactNode } | null>(null);
 
   const showToast = (message: string, icon?: React.ReactNode) => {
@@ -80,27 +78,12 @@ export default function DropdownCard({
         </button>
       )}
       {onDelete && (
-        <>
-          <button
-            className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100 cursor-pointer transition-all duration-300"
-            onClick={() => setShowDeleteModal(true)}
-          >
-            <FontAwesomeIcon icon={faTrashAlt} className="mr-2" /> Excluir
-          </button> 
-          {showDeleteModal && typeof window !== 'undefined' &&
-            ReactDOM.createPortal(
-              <DeleteModal
-                isOpen={showDeleteModal}
-                onClose={() => setShowDeleteModal(false)}
-                onDelete={() => {
-                  if (onDelete) onDelete();
-                  setShowDeleteModal(false);
-                }}
-              />,
-              document.body
-            )
-          }
-        </>
+        <button
+          className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100 cursor-pointer transition-all duration-300"
+          onClick={() => onRequestDelete(id)}
+        >
+          <FontAwesomeIcon icon={faTrashAlt} className="mr-2" /> Excluir
+        </button>
       )}
       </div>
     </>
