@@ -1,4 +1,5 @@
 export default interface DropdownCardProps {
+  id: string;
   onEdit?: () => void;
   onDownload?: () => void;
   onPin?: () => void;

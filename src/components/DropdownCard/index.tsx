@@ -10,15 +10,17 @@ import DropdownCardProps from "@/interfaces/DropdownCardProps";
 import DeleteModal from "../modals/DeleteModal";
 import ReactDOM from "react-dom";
 import ToastNotification from "../ToastNotification";
+import { downloadArquivo } from "@/utils/api";
 
 export default function DropdownCard({
+  id,
   onEdit,
   onDownload,
   onPin,
   onUnpin,
   onDelete,
   pinLabel = "Fixar"
-}: DropdownCardProps) {
+}: DropdownCardProps & { id: string }) {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [toast, setToast] = useState<{ message: string; icon?: React.ReactNode } | null>(null);
 
@@ -50,7 +52,7 @@ export default function DropdownCard({
       {onDownload && (
         <button
           className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer transition-all duration-300"
-          onClick={onDownload}
+          onClick={() => downloadArquivo(id)}
         >
           <FontAwesomeIcon icon={faDownload} className="mr-2" /> Baixar
         </button>

@@ -78,6 +78,7 @@ export default function CardFile(props: import("../../interfaces/CardFiles").def
             </button>
             {openDropdown && (
               <DropdownCard
+                id={id}
                 onEdit={handleEditClick}
                 onDownload={onDownload ? () => { onDownload(id); setOpenDropdown(false); } : undefined}
                 onPin={onPin ? () => { onPin(id); setOpenDropdown(false); } : undefined}

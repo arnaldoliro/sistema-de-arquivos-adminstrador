@@ -84,7 +84,7 @@ export async function uploadFile(payload: {
   }
 }
 
-export async function downloadArquivo(id: number): Promise<void> {
+export async function downloadArquivo(id: string): Promise<void> {
   try {
     const response = await fetch(`http://localhost:3000/files/${id}/download`);
 
