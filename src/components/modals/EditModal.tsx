@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import BaseModal from "../BaseModal";
+import { editFile } from "@/utils/api";
+import { useFiles } from "@/context/FilesContext";
 
-export default function EditModal({ isOpen, onClose, initialName = "", initialDescription = "", onSave }: {
+export default function EditModal({ isOpen, onClose, initialName = "", initialDescription = "", fileId, onSave }: {
   isOpen: boolean;
   onClose: () => void;
   initialName?: string;
   initialDescription?: string;
+  fileId: number;
   onSave?: (name: string, description: string) => void;
 }) {
   const [name, setName] = useState(initialName);
@@ -24,33 +27,57 @@ export default function EditModal({ isOpen, onClose, initialName = "", initialDe
     setLoading(false);
   };
 
+  const { refreshFiles } = useFiles();
+
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!name) {
+      setMessage("Preencha todos os campos obrigatórios.");
+      setError(true);
+      setTimeout(() => {
+        setError(false);
+        setMessage("");
+      }, 2000);
+      return;
+    }
+
     setLoading(true);
     setError(false);
     setSuccess(false);
     setMessage("");
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    const isSuccess = Math.random() > 0.2;
-    setLoading(false);
-    if (isSuccess) {
+
+    try {
+      await editFile({
+        id: fileId,
+        nome: name,
+        descricao: description,
+      });
+
+      if (refreshFiles) {
+        await refreshFiles();
+      }
+
+      setLoading(false);
       setSuccess(true);
       setMessage("Arquivo editado com sucesso!");
+      
       if (onSave) onSave(name, description);
+      
       setTimeout(() => {
         setSuccess(false);
         setMessage("");
         resetForm();
         onClose();
-      }, 1500);
-    } else {
+      }, 1800);
+    } catch (err) {
+      setLoading(false);
       setError(true);
-      setMessage("Erro ao editar arquivo!");
+      setMessage(err instanceof Error ? err.message : "Erro ao editar arquivo!");
       setTimeout(() => {
         setError(false);
         setMessage("");
-        resetForm();
-      }, 1500);
+      }, 2000);
     }
   };
 

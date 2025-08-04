@@ -1,11 +1,11 @@
 import CardFile from "@/components/CardFile";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faThumbtack } from "@fortawesome/free-solid-svg-icons";
-import { filesData } from "@/data/FilesData";
+import { faThumbtack, faCircleCheck, faCircleXmark } from "@fortawesome/free-solid-svg-icons";
+import { useFiles } from "@/context/FilesContext";
+import SectionFilesProps from "@/interfaces/SectionFilesProp";
 
-const pinnedFiles = filesData.filter(file => file.pinned);
-
-export default function PinnedSection() {
+export default function PinnedFiles({ showToast }: SectionFilesProps) {
+  const { files = [], loading, error, fixFile } = useFiles();
 
   // Funções para requisições futuras
   const handleEdit = (id: string) => {
@@ -14,13 +14,22 @@ export default function PinnedSection() {
   const handleDownload = (id: string) => {
     // TODO: Requisição para download
   };
-  const handleUnpin = (id: string) => {
-    // TODO: Requisição para desafixar
+  const handleUnpin = async (id: string) => {
+    try {
+      await fixFile(Number(id), false);
+      if (showToast) showToast("Arquivo desafixado com sucesso!", <FontAwesomeIcon icon={faCircleCheck} className="text-green-500" />);
+    } catch (e) {
+      if (showToast) showToast("Erro ao desafixar arquivo!", <FontAwesomeIcon icon={faCircleXmark} className="text-red-500" />);
+    }
   };
   const handleDelete = (id: string) => {
     // TODO: Requisição para excluir
   };
 
+  const pinnedFiles = files ? files.filter(file => file.fixado === true) : [];
+  if (!pinnedFiles.length) {
+    return null;
+  }
   return (
     <div className="mb-8 pinned-section rounded-lg p-4">
       <h4 className="text-xl font-bold text-gray-700 mb-4">
@@ -34,11 +43,13 @@ export default function PinnedSection() {
         {pinnedFiles.map(file => (
           <CardFile
             key={file.id}
-            id={file.id}
-            name={file.name}
-            description={file.description}
+            id={String(file.id)}
+            nome={file.nome}
+            descricao={file.descricao}
+            categoria={file.categoria}
             size={file.size}
-            updated={file.updated}
+            criadoEm={new Date(file.criadoEm)}
+            fixado={file.fixado}
             icon={file.icon}
             type={file.type}
             onEdit={handleEdit}
