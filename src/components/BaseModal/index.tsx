@@ -94,7 +94,7 @@ export default function BaseModal({
           {!loading && !error && !success && (
             <motion.div
               key="form"
-              className="relative bg-white rounded-lg shadow-xl w-full max-w-md mx-4"
+              className="relative bg-white rounded-lg shadow-xl w-full max-w-md mx-4 scale-90"
               initial={{ scale: 0.95, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
