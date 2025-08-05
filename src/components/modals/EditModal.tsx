@@ -47,23 +47,21 @@ export default function EditModal({ isOpen, onClose, initialName = "", initialDe
         nome: name,
         descricao: description,
       });
-
-      if (refreshFiles) {
-        await refreshFiles();
-      }
-
       setLoading(false);
       setSuccess(true);
       setMessage("Arquivo editado com sucesso!");
       
-      if (onSave) onSave(name, description);
-      
-      setTimeout(() => {
+      setTimeout(async () => {
+        if (refreshFiles) {
+          await refreshFiles();
+        }
+
         setSuccess(false);
         setMessage("");
         resetForm();
         onClose();
-      }, 1800);
+      }, 2000);
+      
     } catch (err) {
       setLoading(false);
       setError(true);
