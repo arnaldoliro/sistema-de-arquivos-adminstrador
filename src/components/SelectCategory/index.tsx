@@ -4,16 +4,18 @@ import { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import SelectCategoryProps from '@/interfaces/SelectCategoryProps';
 
 const options = [
   { value: 'all', label: 'Todos os tipos' },
-  { value: 'pdf', label: 'PDF' },
-  { value: 'doc', label: 'Documentos' },
-  { value: 'img', label: 'Imagens' },
-  { value: 'zip', label: 'Arquivos ZIP' },
+  { value: 'Documento', label: 'Documentos' },
+  { value: 'Imagem', label: 'Imagens' },
+  { value: 'Planilha', label: 'Planilhas' },
+  { value: 'Apresentacao', label: 'Apresentação' },
+  { value: 'Outros', label: 'Outros' },
 ];
 
-export default function AnimatedDropdown() {
+export default function AnimatedDropdown({onFilterChange}: SelectCategoryProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [selected, setSelected] = useState('all');
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -32,6 +34,7 @@ export default function AnimatedDropdown() {
   const handleSelect = (value: string) => {
     setSelected(value);
     setIsOpen(false);
+    onFilterChange(value === 'all' ? '' : value);
   };
 
   return (

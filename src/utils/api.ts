@@ -5,6 +5,18 @@ import Filters from '../types/Filters'
 export async function getFiles(filters: Filters & { page: number; limit?: number}) {
   const url = new URL("http://localhost:3000/files")
 
+  if (filters.search?.trim()) {
+    url.searchParams.append("search", filters.search.trim())
+  }
+
+  if (filters.category && filters.category !== "" && filters.category !== "Todas as categorias") {
+    url.searchParams.append("category", filters.category)
+  }
+
+  if (filters.date && !isNaN(Date.parse(filters.date))) {
+    url.searchParams.append("date", filters.date)
+  }
+
   try {
     const res = await fetch(url.toString())
     if (!res.ok) throw new Error("contate a equipe de suporte")

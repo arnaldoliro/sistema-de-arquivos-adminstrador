@@ -7,9 +7,7 @@ import { faCircleCheck, faCircleXmark} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default function AllFilesSection({ showToast, onRequestDelete }: SectionFilesProps) {
-  const { files, loading, error, fixFile } = useFiles();
-
-  const {refreshFiles} = useFiles();
+  const { files, loading, error, fixFile, refreshFiles, filteredFiles } = useFiles();
 
   const handleEdit = async (id: number, newName: string, newDescription: string) => {
   try {
@@ -69,7 +67,7 @@ export default function AllFilesSection({ showToast, onRequestDelete }: SectionF
     <div>
       <h4 className="text-xl text-gray-700 mb-4 font-bold">Todos os Arquivos</h4>
       <div id="all-files" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-        {files.filter(file => file.fixado === false).map((file: any) => (
+        {filteredFiles.filter(file => file.fixado === false).map((file: any) => (
           <CardFile
             key={file.id}
             id={file.id}

@@ -4,9 +4,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown, faUpload } from "@fortawesome/free-solid-svg-icons";
 import UploadModal from "../modals/UploadModal";
 import SelectCategory from "../SelectCategory";
+import { useFiles } from "@/context/FilesContext";
 
 export default function ActionBar() {
   const [isUploadOpen, setIsUploadOpen] = useState(false);
+   const { setCategoryFilter } = useFiles();
 
   const handleOpenUpload = () => setIsUploadOpen(true);
   const handleCloseUpload = () => setIsUploadOpen(false);
@@ -19,7 +21,7 @@ export default function ActionBar() {
           <p className="text-sm text-gray-500" id="file-count">Mostrando 8 arquivos</p>
         </div>
         <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
-          <SelectCategory />
+          <SelectCategory onFilterChange={setCategoryFilter}/>
           <button
             id="upload-button"
             className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg flex items-center justify-center cursor-pointer transition-all duration-300"

@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import React, { createContext, useContext, useState, useEffect, ReactNode, useMemo } from "react";
 import { getFiles, fixFiles } from "@/utils/api";
 
 interface File {
@@ -15,10 +15,12 @@ interface File {
 
 interface FilesContextType {
   files: File[];
+  filteredFiles: File[];
   loading: boolean;
   error: string | null;
   refreshFiles: () => void;
   fixFile: (id: number, isPinned: boolean) => Promise<void>;
+  setCategoryFilter: (category: string) => void;
 }
 
 const FilesContext = createContext<FilesContextType | undefined>(undefined);
@@ -33,12 +35,18 @@ export const FilesProvider = ({ children, search = "" }: { children: ReactNode; 
   const [files, setFiles] = useState<File[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [categoryFilter, setCategoryFilter] = useState<string | null>(null);
 
-  const refreshFiles = async () => {
+  const filteredFiles = useMemo(() => {
+    if (!categoryFilter) return files;
+    return files.filter(file => file.categoria === categoryFilter);
+  }, [files, categoryFilter]);
+
+  const fetchFiles = async () => {
     setLoading(true);
     setError(null);
     try {
-      const data = await getFiles({ page: 1, search });
+      const data = await getFiles({ page: 1, search, category: categoryFilter ?? undefined });
       setFiles(data.files || data);
     } catch (err: any) {
       setError("Erro ao buscar arquivos");
@@ -47,12 +55,20 @@ export const FilesProvider = ({ children, search = "" }: { children: ReactNode; 
     }
   };
 
+  useEffect(() => {
+    fetchFiles();
+  }, [search, categoryFilter]);
+
+  const refreshFiles = async () => {
+    await fetchFiles();
+  };
+
   const fixFile = async (id: number, isPinned: boolean) => {
     setLoading(true);
     setError(null);
     try {
       await fixFiles(id, isPinned);
-      await refreshFiles();
+      await fetchFiles();
     } catch (err: any) {
       setError(isPinned ? "Erro ao fixar arquivo" : "Erro ao desafixar arquivo");
     } finally {
@@ -61,11 +77,11 @@ export const FilesProvider = ({ children, search = "" }: { children: ReactNode; 
   };
 
   useEffect(() => {
-    refreshFiles();
-  }, [search]);
+    fetchFiles();
+  }, [search, categoryFilter]);
 
   return (
-    <FilesContext.Provider value={{ files, loading, error, refreshFiles, fixFile }}>
+    <FilesContext.Provider value={{ files, filteredFiles, loading, error, refreshFiles, fixFile, setCategoryFilter }}>
       {children}
     </FilesContext.Provider>
   );
