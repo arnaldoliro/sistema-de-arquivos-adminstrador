@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode, useMemo } from "react";
 import { getFiles, fixFiles } from "@/utils/api";
+import { FilesProviderProps } from "@/types/FilesProviderProps";
 
 interface File {
   id: number;
@@ -31,7 +32,7 @@ export const useFiles = () => {
   return ctx;
 };
 
-export const FilesProvider = ({ children, search = "" }: { children: ReactNode; search?: string }) => {
+export const FilesProvider = ({ children, search = "", page = 1 }: FilesProviderProps) => {
   const [files, setFiles] = useState<File[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -46,7 +47,11 @@ export const FilesProvider = ({ children, search = "" }: { children: ReactNode; 
     setLoading(true);
     setError(null);
     try {
-      const data = await getFiles({ page: 1, search, category: categoryFilter ?? undefined });
+      const data = await getFiles({
+        page,
+        search,
+        category: categoryFilter ?? undefined,
+      });
       setFiles(data.files || data);
     } catch (err: any) {
       setError("Erro ao buscar arquivos");
@@ -54,10 +59,6 @@ export const FilesProvider = ({ children, search = "" }: { children: ReactNode; 
       setLoading(false);
     }
   };
-
-  useEffect(() => {
-    fetchFiles();
-  }, [search, categoryFilter]);
 
   const refreshFiles = async () => {
     await fetchFiles();
@@ -78,10 +79,20 @@ export const FilesProvider = ({ children, search = "" }: { children: ReactNode; 
 
   useEffect(() => {
     fetchFiles();
-  }, [search, categoryFilter]);
+  }, [search, categoryFilter, page]); // <-- adiciona page aqui
 
   return (
-    <FilesContext.Provider value={{ files, filteredFiles, loading, error, refreshFiles, fixFile, setCategoryFilter }}>
+    <FilesContext.Provider
+      value={{
+        files,
+        filteredFiles,
+        loading,
+        error,
+        refreshFiles,
+        fixFile,
+        setCategoryFilter,
+      }}
+    >
       {children}
     </FilesContext.Provider>
   );
