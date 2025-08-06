@@ -17,6 +17,11 @@ export async function getFiles(filters: Filters & { page: number; limit?: number
     url.searchParams.append("date", filters.date)
   }
 
+  url.searchParams.append("page", filters.page.toString())
+  if (filters.limit) {
+    url.searchParams.append("limit", filters.limit.toString())
+  }
+
   try {
     const res = await fetch(url.toString())
     if (!res.ok) throw new Error("contate a equipe de suporte")
