@@ -1,9 +1,12 @@
 import Filters from '../types/Filters'
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL ?? (() => {
+  throw new Error("Variável NEXT_PUBLIC_API_URL não definida!");
+})();
 
 // Listar os Arquivos
 export async function getFiles(filters: Filters & { page: number; limit?: number}) {
-  const url = new URL("http://localhost:3000/files")
+  const url = new URL(`${API_URL}/files`)
 
   if (filters.search?.trim()) {
     url.searchParams.append("search", filters.search.trim())
@@ -33,7 +36,7 @@ export async function getFiles(filters: Filters & { page: number; limit?: number
 }
 
 export async function fixFiles(id: number, isPinned: boolean) {
-  const response = await fetch(`http://localhost:3000/files/${id}/fix`, {
+  const response = await fetch(`${API_URL}/files/${id}/fix`, {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json',
@@ -60,7 +63,7 @@ export async function uploadFile(payload: {
   isPinned: boolean
 }) {
   try {
-    const response = await fetch('http://localhost:3000/upload', {
+    const response = await fetch(`${API_URL}/upload`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -82,7 +85,7 @@ export async function uploadFile(payload: {
 
 export async function downloadArquivo(id: string): Promise<void> {
   try {
-    const response = await fetch(`http://localhost:3000/files/${id}/download`);
+    const response = await fetch(`${API_URL}/files/${id}/download`);
 
     if (!response.ok) {
       throw new Error('Erro ao baixar o arquivo');
@@ -118,7 +121,7 @@ export async function downloadArquivo(id: string): Promise<void> {
 
 export async function deleteFile(id: string): Promise<void> {
   try {
-    const response = await fetch(`http://localhost:3000/files/${id}`, {
+    const response = await fetch(`${API_URL}/files/${id}`, {
       method: 'DELETE',
     });
     if (!response.ok) {
@@ -138,7 +141,7 @@ export async function editFile(payload: {
   descricao: string
 }): Promise<void> {
   try {
-    const response = await fetch(`http://localhost:3000/files/update`, {
+    const response = await fetch(`${API_URL}/files/update`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
