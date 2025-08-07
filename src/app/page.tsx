@@ -18,8 +18,8 @@ export default function Home() {
   const [modalOpen, setModalOpen] = React.useState(false);
   const [idToDelete, setIdToDelete] = React.useState<string | null>(null);
   const [page, setPage] = useState(1);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  // Função para disparar o toast
   const toastTimeout = React.useRef<NodeJS.Timeout | null>(null);
   const showToast = (message: string, icon?: React.ReactNode) => {
     setToast({
@@ -61,11 +61,15 @@ export default function Home() {
 }
 
   return (
-    <div className="min-h-screen flex">
-      <Sidebar />
-      <div className="flex-1 flex flex-col min-h-screen ml-64">
+    <div className="flex min-h-screen overflow-x-hidden">
+      <Sidebar sideBarOpen={sidebarOpen} setSideBarOpen={setSidebarOpen} />
+      <div
+        className={`flex-1 flex flex-col min-h-screen transition-all duration-300 ${
+          sidebarOpen ? "ml-40 md:ml-48 lg:ml-64" : "ml-0 lg:ml-64"
+        }`}
+      >
        <FilesProvider search={search} page={page}>
-        <Navbar />
+        <Navbar toggleSidebar={() => setSidebarOpen(!sidebarOpen)} />
         <main className="flex-1 overflow-y-auto bg-gray-50 p-4">
           <div className="max-w-7xl mx-auto">
             <ActionBar onSearch={setSearch} />

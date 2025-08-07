@@ -1,13 +1,13 @@
 "use client";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars, faSearch, faUser } from "@fortawesome/free-solid-svg-icons";
+import { faBars, faUser } from "@fortawesome/free-solid-svg-icons";
 
-export default function Navbar() {
+export default function Navbar({ toggleSidebar }: { toggleSidebar: () => void }) {
   return (
     <header className="bg-white shadow-sm">
       <div className="flex items-center justify-between p-4">
         <div className="flex items-center">
-          <button className="md:hidden mr-4 text-gray-600">
+          <button className="lg:hidden mr-4 text-gray-600 cursor-pointer" onClick={toggleSidebar}>
             <span className="text-xl"><FontAwesomeIcon icon={faBars} /></span>
           </button>
           <h2 className="text-xl font-semibold text-gray-800">Gerenciamento de Arquivos</h2>
