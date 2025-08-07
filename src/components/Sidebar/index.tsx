@@ -9,7 +9,7 @@ import {
 
 export default function Sidebar() {
 return (
-    <aside className="w-64 bg-gray-900 text-white py-6 flex flex-col md:block min-h-screen">
+    <aside className="w-64 fixed top-0 left-0 h-screen bg-gray-900 text-white py-6 flex flex-col">
       <div className="px-6">
         <h1 className="text-2xl font-bold mb-6">Admin Panel</h1>
         <nav>
