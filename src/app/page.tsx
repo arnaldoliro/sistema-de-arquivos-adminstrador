@@ -65,10 +65,10 @@ export default function Home() {
       <Sidebar />
       <div className="flex-1 flex flex-col min-h-screen ml-64">
        <FilesProvider search={search} page={page}>
-        <Navbar onSearch={setSearch} />
+        <Navbar />
         <main className="flex-1 overflow-y-auto bg-gray-50 p-4">
           <div className="max-w-7xl mx-auto">
-            <ActionBar />
+            <ActionBar onSearch={setSearch} />
               {/* ToastNotification global */}
               <DeleteModal
                 isOpen={modalOpen}
