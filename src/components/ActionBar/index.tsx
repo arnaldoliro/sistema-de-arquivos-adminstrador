@@ -15,30 +15,34 @@ export default function ActionBar({ onSearch }: { onSearch: (value: string) => v
 
   return (
     <>
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6 space-y-4 md:space-y-0">
-        <div>
-          <h3 className="text-lg font-medium text-gray-700">Todos os Arquivos</h3>
-          <p className="text-sm text-gray-500" id="file-count">Mostrando 12 arquivos</p>
-        </div>
-        <div className="relative w-[40%] mx-4">
-          <input
-            type="text"
-            placeholder="Buscar arquivos..."
-            className="text-gray-600 py-2 pl-10 pr-4 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 w-full"
-            onChange={(e) => onSearch(e.target.value)}
-          />
-          <span className="absolute left-3 top-2.5 text-gray-400"><FontAwesomeIcon icon={faSearch} /></span>
-        </div>
-        <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
-          <SelectCategory onFilterChange={setCategoryFilter}/>
-          <button
-            id="upload-button"
-            className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg flex items-center justify-center cursor-pointer transition-all duration-300"
-            onClick={handleOpenUpload}
-          >
-            <FontAwesomeIcon icon={faUpload} className="mr-2" />
-            <span>Enviar Arquivo</span>
-          </button>
+      <div className="flex flex-col lg:items-center lg:flex-row md:items-center md:justify-between mb-6 md:space-y-0">
+        {/* <div className="flex w-full md:gap-x-3 md:mb-5 md:justify-center xl:justify-between"> */}
+          <div className="flex flex-col mt-0 text-center">
+            <h3 className="text-md font-semibold text-gray-700">Todos os Arquivos</h3>
+            <p className="text-xs text-gray-500" id="file-count">Mostrando 12 arquivos</p>
+          </div>
+        {/* </div> */}
+        <div className="flex flex-col items-center space-y-2 sm:space-y-0 sm:space-x-2 md:w-full lg:w-[80%] lg:justify-between md:justify-between md:items-center md:flex-row sm:flex-col">
+          <div className="relative lg:w-[40%] md:w-auto w-[90%] my-2 lg:ml-4">
+            <input
+              type="text"
+              placeholder="Buscar arquivos..."
+              className="text-gray-600 py-2 pl-10 pr-4 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 w-full"
+              onChange={(e) => onSearch(e.target.value)}
+            />
+            <span className="absolute left-3 top-2.5 text-gray-400"><FontAwesomeIcon icon={faSearch} /></span>
+          </div>
+          <div className="flex flex-col w-[85%] gap-2 md:flex-row md:items-center md:w-auto">
+            <SelectCategory onFilterChange={setCategoryFilter}/>
+            <button
+              id="upload-button"
+              className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg flex items-center justify-center cursor-pointer transition-all duration-300"
+              onClick={handleOpenUpload}
+            >
+              <FontAwesomeIcon icon={faUpload} className="mr-2" />
+              <span>Enviar Arquivo</span>
+            </button>
+          </div>
         </div>
       </div>
       <UploadModal isOpen={isUploadOpen} onClose={handleCloseUpload} />

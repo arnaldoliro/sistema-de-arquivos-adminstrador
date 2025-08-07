@@ -38,7 +38,7 @@ export default function AnimatedDropdown({onFilterChange}: SelectCategoryProps) 
   };
 
   return (
-    <div className="relative w-64" ref={dropdownRef}>
+    <div className="relative md:w-auto lg:w-auto whitespace-nowrap" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="w-full bg-white border border-gray-300 rounded-lg py-2 pl-3 pr-10 text-gray-700 text-left focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300 cursor-pointer"
