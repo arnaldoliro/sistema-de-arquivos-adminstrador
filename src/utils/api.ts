@@ -5,35 +5,35 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL ?? (() => {
 })();
 
 // Listar os Arquivos
-// export async function getFiles(filters: Filters & { page: number; limit?: number}) {
-//   const url = new URL(`${API_URL}/files`)
+export async function getFiles(filters: Filters & { page: number; limit?: number}) {
+  const url = new URL(`${API_URL}/files`)
 
-//   if (filters.search?.trim()) {
-//     url.searchParams.append("search", filters.search.trim())
-//   }
+  if (filters.search?.trim()) {
+    url.searchParams.append("search", filters.search.trim())
+  }
 
-//   if (filters.category && filters.category !== "" && filters.category !== "Todas as categorias") {
-//     url.searchParams.append("category", filters.category)
-//   }
+  if (filters.category && filters.category !== "" && filters.category !== "Todas as categorias") {
+    url.searchParams.append("category", filters.category)
+  }
 
-//   if (filters.date && !isNaN(Date.parse(filters.date))) {
-//     url.searchParams.append("date", filters.date)
-//   }
+  if (filters.date && !isNaN(Date.parse(filters.date))) {
+    url.searchParams.append("date", filters.date)
+  }
 
-//   url.searchParams.append("page", filters.page.toString())
-//   if (filters.limit) {
-//     url.searchParams.append("limit", filters.limit.toString())
-//   }
+  url.searchParams.append("page", filters.page.toString())
+  if (filters.limit) {
+    url.searchParams.append("limit", filters.limit.toString())
+  }
 
-//   try {
-//     const res = await fetch(url.toString())
-//     if (!res.ok) throw new Error("contate a equipe de suporte")
-//     return await res.json()
-//   } catch (err) {
-//     console.error("[getFiles] Erro ao buscar arquivos:", err)
-//     throw err
-//   }
-// }
+  try {
+    const res = await fetch(url.toString())
+    if (!res.ok) throw new Error("contate a equipe de suporte")
+    return await res.json()
+  } catch (err) {
+    console.error("[getFiles] Erro ao buscar arquivos:", err)
+    throw err
+  }
+}
 
 // export async function fixFiles(id: number, isPinned: boolean) {
 //   const response = await fetch(`${API_URL}/files/${id}/fix`, {
