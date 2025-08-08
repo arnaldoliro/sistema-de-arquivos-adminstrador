@@ -5,58 +5,58 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL ?? (() => {
 })();
 
 // Listar os Arquivos
-export async function getFiles(filters: Filters & { page: number; limit?: number}) {
-  const url = new URL(`${API_URL}/files`)
+// export async function getFiles(filters: Filters & { page: number; limit?: number}) {
+//   const url = new URL(`${API_URL}/files`)
 
-  if (filters.search?.trim()) {
-    url.searchParams.append("search", filters.search.trim())
-  }
+//   if (filters.search?.trim()) {
+//     url.searchParams.append("search", filters.search.trim())
+//   }
 
-  if (filters.category && filters.category !== "" && filters.category !== "Todas as categorias") {
-    url.searchParams.append("category", filters.category)
-  }
+//   if (filters.category && filters.category !== "" && filters.category !== "Todas as categorias") {
+//     url.searchParams.append("category", filters.category)
+//   }
 
-  if (filters.date && !isNaN(Date.parse(filters.date))) {
-    url.searchParams.append("date", filters.date)
-  }
+//   if (filters.date && !isNaN(Date.parse(filters.date))) {
+//     url.searchParams.append("date", filters.date)
+//   }
 
-  url.searchParams.append("page", filters.page.toString())
-  if (filters.limit) {
-    url.searchParams.append("limit", filters.limit.toString())
-  }
+//   url.searchParams.append("page", filters.page.toString())
+//   if (filters.limit) {
+//     url.searchParams.append("limit", filters.limit.toString())
+//   }
 
-  try {
-    const res = await fetch(url.toString())
-    if (!res.ok) throw new Error("contate a equipe de suporte")
-    return await res.json()
-  } catch (err) {
-    console.error("[getFiles] Erro ao buscar arquivos:", err)
-    throw err
-  }
-}
+//   try {
+//     const res = await fetch(url.toString())
+//     if (!res.ok) throw new Error("contate a equipe de suporte")
+//     return await res.json()
+//   } catch (err) {
+//     console.error("[getFiles] Erro ao buscar arquivos:", err)
+//     throw err
+//   }
+// }
 
-export async function fixFiles(id: number, isPinned: boolean) {
-  const response = await fetch(`${API_URL}/files/${id}/fix`, {
-    method: 'PATCH',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ isPinned }),
-  });
+// export async function fixFiles(id: number, isPinned: boolean) {
+//   const response = await fetch(`${API_URL}/files/${id}/fix`, {
+//     method: 'PATCH',
+//     headers: {
+//       'Content-Type': 'application/json',
+//     },
+//     body: JSON.stringify({ isPinned }),
+//   });
 
-  if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.message || 'Erro ao fixar');
-  }
+//   if (!response.ok) {
+//     const error = await response.json();
+//     throw new Error(error.message || 'Erro ao fixar');
+//   }
 
-  return await response.json();
-}
+//   return await response.json();
+// }
 
 export async function uploadFile(payload: {
   nome: string
   descricao: string
   categoria: string
-  lotacao: string
+  lotacao: number
   conteudo: string
   originalFileName: string
   mimeType: string
@@ -83,80 +83,80 @@ export async function uploadFile(payload: {
   }
 }
 
-export async function downloadArquivo(id: string): Promise<void> {
-  try {
-    const response = await fetch(`${API_URL}/files/${id}/download`);
+// export async function downloadArquivo(id: string): Promise<void> {
+//   try {
+//     const response = await fetch(`${API_URL}/files/${id}/download`);
 
-    if (!response.ok) {
-      throw new Error('Erro ao baixar o arquivo');
-    }
+//     if (!response.ok) {
+//       throw new Error('Erro ao baixar o arquivo');
+//     }
 
 
-    const disposition = response.headers.get('Content-Disposition');
-    let fileName = 'arquivo';
+//     const disposition = response.headers.get('Content-Disposition');
+//     let fileName = 'arquivo';
 
-    console.log('Headers:', [...response.headers.entries()]);
+//     console.log('Headers:', [...response.headers.entries()]);
 
-    if (disposition) {
-      const match = disposition.match(/filename\*=UTF-8''([^;]+)|filename="?([^";]+)"?/);
-      if (match) {
-        fileName = decodeURIComponent(match[1] || match[2]);
-      }
-    }
+//     if (disposition) {
+//       const match = disposition.match(/filename\*=UTF-8''([^;]+)|filename="?([^";]+)"?/);
+//       if (match) {
+//         fileName = decodeURIComponent(match[1] || match[2]);
+//       }
+//     }
 
-    console.log(fileName)
+//     console.log(fileName)
 
-    const blob = await response.blob();
+//     const blob = await response.blob();
 
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = fileName;
-    link.click();
+//     const link = document.createElement('a');
+//     link.href = URL.createObjectURL(blob);
+//     link.download = fileName;
+//     link.click();
 
-    URL.revokeObjectURL(link.href);
-  } catch (error) {
-    console.error('Erro ao baixar arquivo:', error);
-  }
-}
+//     URL.revokeObjectURL(link.href);
+//   } catch (error) {
+//     console.error('Erro ao baixar arquivo:', error);
+//   }
+// }
 
-export async function deleteFile(id: string): Promise<void> {
-  try {
-    const response = await fetch(`${API_URL}/files/${id}`, {
-      method: 'DELETE',
-    });
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.message || 'Erro ao excluir arquivo');
-    }
-    return await response.json();
-  } catch (error: unknown) {
-    console.error('Erro ao excluir arquivo:', error);
-    throw error;
-  }
-}
+// export async function deleteFile(id: string): Promise<void> {
+//   try {
+//     const response = await fetch(`${API_URL}/files/${id}`, {
+//       method: 'DELETE',
+//     });
+//     if (!response.ok) {
+//       const errorData = await response.json();
+//       throw new Error(errorData.message || 'Erro ao excluir arquivo');
+//     }
+//     return await response.json();
+//   } catch (error: unknown) {
+//     console.error('Erro ao excluir arquivo:', error);
+//     throw error;
+//   }
+// }
 
-export async function editFile(payload: {
-  id: number
-  nome: string
-  descricao: string
-}): Promise<void> {
-  try {
-    const response = await fetch(`${API_URL}/files/update`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(payload),
-    });
+// export async function editFile(payload: {
+//   id: number
+//   nome: string
+//   descricao: string
+// }): Promise<void> {
+//   try {
+//     const response = await fetch(`${API_URL}/files/update`, {
+//       method: 'PATCH',
+//       headers: {
+//         'Content-Type': 'application/json',
+//       },
+//       body: JSON.stringify(payload),
+//     });
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.message || 'Erro ao editar arquivo');
-    }
+//     if (!response.ok) {
+//       const errorData = await response.json();
+//       throw new Error(errorData.message || 'Erro ao editar arquivo');
+//     }
 
-    return await response.json();
-  } catch (error: unknown) {
-    console.error('Erro ao editar arquivo:', error);
-    throw error;
-  }
-}
+//     return await response.json();
+//   } catch (error: unknown) {
+//     console.error('Erro ao editar arquivo:', error);
+//     throw error;
+//   }
+// }
