@@ -29,73 +29,86 @@ export default function UploadModal({ isOpen, onClose }: { isOpen: boolean; onCl
   };
 
   const handleUpload = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!arquivo) {
-      setMensagem("Selecione um arquivo.");
-      setError(true);
-      setTimeout(() => {
-        setError(false);
-        setMensagem("");
-      }, 2000);
-      return;
-    }
-    if (!nome || !categoria || !lotacao) {
-      setMensagem("Preencha todos os campos obrigatórios.");
-      setError(true);
-      setTimeout(() => {
-        setError(false);
-        setMensagem("");
-      }, 2000);
-      return;
-    }
-    setLoading(true);
-    setError(false);
-    setSuccess(false);
-    setMensagem("");
+  e.preventDefault();
 
-    try {
-      // Lê o arquivo como base64
-      const fileContent = await new Promise<string>((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve(reader.result as string);
-        reader.onerror = reject;
-        reader.readAsDataURL(arquivo);
-      });
+  if (!arquivo) {
+    setMensagem("Selecione um arquivo.");
+    setError(true);
+    setTimeout(() => {
+      setError(false);
+      setMensagem("");
+    }, 2000);
+    return;
+  }
+  if (!nome || !categoria || !lotacao) {
+    setMensagem("Preencha todos os campos obrigatórios.");
+    setError(true);
+    setTimeout(() => {
+      setError(false);
+      setMensagem("");
+    }, 2000);
+    return;
+  }
 
-      // Remove o prefixo "data:...;base64,"
-      const base64 = fileContent.split(",")[1];
+  // Converter lotacao para número
+  const lotacaoNum = Number(lotacao);
+  if (isNaN(lotacaoNum)) {
+    setMensagem("Lotação inválida.");
+    setError(true);
+    setTimeout(() => {
+      setError(false);
+      setMensagem("");
+    }, 2000);
+    return;
+  }
 
-      await uploadFile({
-        nome,
-        descricao,
-        categoria,
-        lotacao,
-        conteudo: base64,
-        originalFileName: arquivo.name,
-        mimeType: arquivo.type,
-        isPinned: false,
-      });
-      await refreshFiles();
+  setLoading(true);
+  setError(false);
+  setSuccess(false);
+  setMensagem("");
 
-      setLoading(false);
-      setSuccess(true);
-      setMensagem("Arquivo enviado com sucesso!");
-      setTimeout(() => {
-        setSuccess(false);
-        setMensagem("");
-        onClose();
-        resetForm();
-      }, 1800);
-    } catch (err) {
-      setLoading(false);
-      setError(true);
-      setMensagem("Erro ao enviar arquivo!");
-      setTimeout(() => {
-        setError(false);
-        setMensagem("");
-      }, 2000);
-    }
-  };
+  try {
+    const fileContent = await new Promise<string>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = reject;
+      reader.readAsDataURL(arquivo);
+    });
+
+    const base64 = fileContent.split(",")[1];
+
+    await uploadFile({
+      nome,
+      descricao,
+      categoria,
+      lotacao: lotacaoNum,  // envia número agora
+      conteudo: base64,
+      originalFileName: arquivo.name,
+      mimeType: arquivo.type,
+      isPinned: false,
+    });
+
+    await refreshFiles();
+
+    setLoading(false);
+    setSuccess(true);
+    setMensagem("Arquivo enviado com sucesso!");
+    setTimeout(() => {
+      setSuccess(false);
+      setMensagem("");
+      onClose();
+      resetForm();
+    }, 1800);
+  } catch (err) {
+    setLoading(false);
+    setError(true);
+    setMensagem("Erro ao enviar arquivo!");
+    setTimeout(() => {
+      setError(false);
+      setMensagem("");
+    }, 2000);
+  }
+};
 
   return (
     <BaseModal
@@ -151,7 +164,7 @@ export default function UploadModal({ isOpen, onClose }: { isOpen: boolean; onCl
           <label htmlFor="lotacao" className="block text-sm font-medium text-gray-700 mb-1">Lotação</label>
           <select id="lotacao" value={lotacao} onChange={e => setLotacao(e.target.value)} className="text-gray-500 w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300">
             <option value="">Selecione a lotação</option>
-            <option value="Gerência Comercial">Gerência Comercial</option>
+            <option value="1">Gerência Comercial</option>
           </select>
         </div>
         <div className="flex justify-end">
