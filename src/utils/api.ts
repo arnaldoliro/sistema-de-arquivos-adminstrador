@@ -5,35 +5,50 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL ?? (() => {
 })();
 
 // Listar os Arquivos
-export async function getFiles(filters: Filters & { page: number; limit?: number}) {
-  const url = new URL(`${API_URL}/files`)
+export async function getFiles(filters: Filters & { page: number; limit?: number }) {
+  const url = new URL(`${API_URL}/files`);
 
   if (filters.search?.trim()) {
-    url.searchParams.append("search", filters.search.trim())
+    url.searchParams.append("search", filters.search.trim());
   }
 
   if (filters.category && filters.category !== "" && filters.category !== "Todas as categorias") {
-    url.searchParams.append("category", filters.category)
+    url.searchParams.append("category", filters.category);
   }
 
   if (filters.date && !isNaN(Date.parse(filters.date))) {
-    url.searchParams.append("date", filters.date)
+    url.searchParams.append("date", filters.date);
   }
 
-  url.searchParams.append("page", filters.page.toString())
+  url.searchParams.append("page", filters.page.toString());
   if (filters.limit) {
-    url.searchParams.append("limit", filters.limit.toString())
+    url.searchParams.append("limit", filters.limit.toString());
   }
+
+  // 🔍 DEBUG — loga a URL final que será chamada
+  console.log("[getFiles] URL final da requisição:", url.toString());
 
   try {
-    const res = await fetch(url.toString())
-    if (!res.ok) throw new Error("contate a equipe de suporte")
-    return await res.json()
+    const res = await fetch(url.toString());
+    console.log("[getFiles] Status da resposta:", res.status);
+
+    if (!res.ok) {
+      console.error("[getFiles] Erro HTTP:", res.status, res.statusText);
+      throw new Error("contate a equipe de suporte");
+    }
+
+    const data = await res.json();
+
+    // 🔍 DEBUG — loga os dados recebidos do back
+    console.log("[getFiles] Dados recebidos do back:", data);
+
+    return data;
   } catch (err) {
-    console.error("[getFiles] Erro ao buscar arquivos:", err)
-    throw err
+    console.error("[getFiles] Erro ao buscar arquivos:", err);
+    throw err;
   }
 }
+
 
 // export async function fixFiles(id: number, isPinned: boolean) {
 //   const response = await fetch(`${API_URL}/files/${id}/fix`, {
