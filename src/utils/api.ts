@@ -134,21 +134,21 @@ export async function uploadFile(payload: {
 //   }
 // }
 
-// export async function deleteFile(id: string): Promise<void> {
-//   try {
-//     const response = await fetch(`${API_URL}/files/${id}`, {
-//       method: 'DELETE',
-//     });
-//     if (!response.ok) {
-//       const errorData = await response.json();
-//       throw new Error(errorData.message || 'Erro ao excluir arquivo');
-//     }
-//     return await response.json();
-//   } catch (error: unknown) {
-//     console.error('Erro ao excluir arquivo:', error);
-//     throw error;
-//   }
-// }
+export async function deleteFile(id: string): Promise<void> {
+  try {
+    const response = await fetch(`${API_URL}/files/${id}`, {
+      method: 'DELETE',
+    });
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || 'Erro ao excluir arquivo');
+    }
+    return await response.json();
+  } catch (error: unknown) {
+    console.error('Erro ao excluir arquivo:', error);
+    throw error;
+  }
+}
 
 // export async function editFile(payload: {
 //   id: number
