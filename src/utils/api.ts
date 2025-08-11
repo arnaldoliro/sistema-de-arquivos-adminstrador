@@ -50,22 +50,22 @@ export async function getFiles(filters: Filters & { page: number; limit?: number
 }
 
 
-// export async function fixFiles(id: number, isPinned: boolean) {
-//   const response = await fetch(`${API_URL}/files/${id}/fix`, {
-//     method: 'PATCH',
-//     headers: {
-//       'Content-Type': 'application/json',
-//     },
-//     body: JSON.stringify({ isPinned }),
-//   });
+export async function fixFiles(id: number, isPinned: boolean) {
+  const response = await fetch(`${API_URL}/files/${id}/fix`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ isPinned }),
+  });
 
-//   if (!response.ok) {
-//     const error = await response.json();
-//     throw new Error(error.message || 'Erro ao fixar');
-//   }
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.message || 'Erro ao fixar');
+  }
 
-//   return await response.json();
-// }
+  return await response.json();
+}
 
 export async function uploadFile(payload: {
   nome: string
