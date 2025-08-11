@@ -150,28 +150,28 @@ export async function deleteFile(id: string): Promise<void> {
   }
 }
 
-// export async function editFile(payload: {
-//   id: number
-//   nome: string
-//   descricao: string
-// }): Promise<void> {
-//   try {
-//     const response = await fetch(`${API_URL}/files/update`, {
-//       method: 'PATCH',
-//       headers: {
-//         'Content-Type': 'application/json',
-//       },
-//       body: JSON.stringify(payload),
-//     });
+export async function editFile(payload: {
+  id: number
+  nome: string
+  descricao: string
+}): Promise<void> {
+  try {
+    const response = await fetch(`${API_URL}/files/update`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    });
 
-//     if (!response.ok) {
-//       const errorData = await response.json();
-//       throw new Error(errorData.message || 'Erro ao editar arquivo');
-//     }
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || 'Erro ao editar arquivo');
+    }
 
-//     return await response.json();
-//   } catch (error: unknown) {
-//     console.error('Erro ao editar arquivo:', error);
-//     throw error;
-//   }
-// }
+    return await response.json();
+  } catch (error: unknown) {
+    console.error('Erro ao editar arquivo:', error);
+    throw error;
+  }
+}
