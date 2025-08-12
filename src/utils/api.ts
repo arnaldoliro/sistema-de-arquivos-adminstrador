@@ -25,12 +25,8 @@ export async function getFiles(filters: Filters & { page: number; limit?: number
     url.searchParams.append("limit", filters.limit.toString());
   }
 
-  // 🔍 DEBUG — loga a URL final que será chamada
-  console.log("[getFiles] URL final da requisição:", url.toString());
-
   try {
     const res = await fetch(url.toString());
-    console.log("[getFiles] Status da resposta:", res.status);
 
     if (!res.ok) {
       console.error("[getFiles] Erro HTTP:", res.status, res.statusText);
@@ -38,9 +34,6 @@ export async function getFiles(filters: Filters & { page: number; limit?: number
     }
 
     const data = await res.json();
-
-    // 🔍 DEBUG — loga os dados recebidos do back
-    console.log("[getFiles] Dados recebidos do back:", data);
 
     return data;
   } catch (err) {
@@ -110,16 +103,12 @@ export async function downloadArquivo(id: string): Promise<void> {
     const disposition = response.headers.get('Content-Disposition');
     let fileName = 'arquivo';
 
-    console.log('Headers:', [...response.headers.entries()]);
-
     if (disposition) {
       const match = disposition.match(/filename\*=UTF-8''([^;]+)|filename="?([^";]+)"?/);
       if (match) {
         fileName = decodeURIComponent(match[1] || match[2]);
       }
     }
-
-    console.log(fileName)
 
     const blob = await response.blob();
 

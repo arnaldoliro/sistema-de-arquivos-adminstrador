@@ -63,8 +63,6 @@ export default function AllFilesSection({ showToast, onRequestDelete }: SectionF
       </div>
     );
   }
-  console.log("Arquivos recebidos do backend:", files);
-  console.log("Campos do primeiro arquivo:", files[0] ? Object.keys(files[0]) : "Nenhum arquivo");
 
   return (
     <div className="mb-8">
