@@ -2,7 +2,7 @@ import React, { useState, useRef } from "react";
 import BaseModal from "../BaseModal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCloudUploadAlt, faCheck, faTimes } from "@fortawesome/free-solid-svg-icons";
-import { uploadFile } from "@/utils/api"; // ajuste o caminho se necessário
+import { uploadFile } from "@/utils/api";
 import { useFiles } from "@/context/FilesContext";
 
 
