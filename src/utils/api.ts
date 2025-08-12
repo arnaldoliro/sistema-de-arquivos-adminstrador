@@ -98,41 +98,41 @@ export async function uploadFile(payload: {
   }
 }
 
-// export async function downloadArquivo(id: string): Promise<void> {
-//   try {
-//     const response = await fetch(`${API_URL}/files/${id}/download`);
+export async function downloadArquivo(id: string): Promise<void> {
+  try {
+    const response = await fetch(`${API_URL}/files/${id}/download`);
 
-//     if (!response.ok) {
-//       throw new Error('Erro ao baixar o arquivo');
-//     }
+    if (!response.ok) {
+      throw new Error('Erro ao baixar o arquivo');
+    }
 
 
-//     const disposition = response.headers.get('Content-Disposition');
-//     let fileName = 'arquivo';
+    const disposition = response.headers.get('Content-Disposition');
+    let fileName = 'arquivo';
 
-//     console.log('Headers:', [...response.headers.entries()]);
+    console.log('Headers:', [...response.headers.entries()]);
 
-//     if (disposition) {
-//       const match = disposition.match(/filename\*=UTF-8''([^;]+)|filename="?([^";]+)"?/);
-//       if (match) {
-//         fileName = decodeURIComponent(match[1] || match[2]);
-//       }
-//     }
+    if (disposition) {
+      const match = disposition.match(/filename\*=UTF-8''([^;]+)|filename="?([^";]+)"?/);
+      if (match) {
+        fileName = decodeURIComponent(match[1] || match[2]);
+      }
+    }
 
-//     console.log(fileName)
+    console.log(fileName)
 
-//     const blob = await response.blob();
+    const blob = await response.blob();
 
-//     const link = document.createElement('a');
-//     link.href = URL.createObjectURL(blob);
-//     link.download = fileName;
-//     link.click();
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = fileName;
+    link.click();
 
-//     URL.revokeObjectURL(link.href);
-//   } catch (error) {
-//     console.error('Erro ao baixar arquivo:', error);
-//   }
-// }
+    URL.revokeObjectURL(link.href);
+  } catch (error) {
+    console.error('Erro ao baixar arquivo:', error);
+  }
+}
 
 export async function deleteFile(id: string): Promise<void> {
   try {
